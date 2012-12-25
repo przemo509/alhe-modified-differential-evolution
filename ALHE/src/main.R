@@ -14,19 +14,6 @@ run = function() {
 }
 
 
-# funkcja losujaca populacje startowa
-init = function(size, limits) {
-    dimsCount = length(limits);
-    coords = list();
-	for(i in 1:dimsCount) {
-        left = limits[[i]]$left;
-        right = limits[[i]]$right;
-		coord = runif(size, left, right);
-		coords = c(coords, list(coord)); # append
-	}
-	population = list();
-	return(population);
-}
 
 randomPointWithinLimits = function(limits) {
 	point = list();
@@ -41,7 +28,7 @@ randomPointWithinLimits = function(limits) {
 ###############################################################################
 
 # włączenie pozostałych plików źródłowych
-# source("userDefined.r");
+ source("userDefined.r");
 
 # wlaczanie debugowania funckji
 # debug(run);

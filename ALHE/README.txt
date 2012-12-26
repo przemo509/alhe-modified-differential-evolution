@@ -21,4 +21,7 @@ Jak uruchomić?
         Detect Default Properties/Settings
       Run -> Run Configurations -> R Console -> New
         Ustaw Working Directory na ${workspace_loc:/ALHE/src}
+        
+Jak uruchomić v2.
+ http://lukemiller.org/index.php/2010/04/eclipse-and-statet-a-nice-working-environment-for-r/
     

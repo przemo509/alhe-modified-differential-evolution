@@ -20,14 +20,19 @@ run = function() {
         	x = sample(P, size = 1)[[1]];
             x_k = sample(P, size = 1)[[1]];
             x_l = sample(P, size = 1)[[1]];
+            
             v = pointsDifference(x_k, x_l);
-            v = multiply(v, Ff);
-            y = movePoint(x, v);
-            z = crossOver(x_i, y, CR);
+            vF = multiply(v, paramF);
+            paramA = calculateStretching(vF);
+            vFA = multiply(vF, paramA);
+            y = movePoint(x, vFA);
+            yFixed = applyLimitsToPoint(y, limits);
+            
+            z = crossOver(x_i, yFixed, paramCR);
             betterPoint = better(x_i, z);
             tempP[[i]] = betterPoint;
             
-            visualise(x_i, x, x_k, x_l, y, z, betterPoint);
+            #visualise(x_i, x, x_k, x_l, y, yFixed, z, betterPoint);
         }
         P = tempP;
         iteration = iteration+1;
@@ -38,11 +43,11 @@ run = function() {
 ###############################################################################
 
 # stała wymnażana przez wektor v
-Ff = 0.9;
+paramF = 0.9;
 
 # stała określająca prawdopodobieństwo przepisania współrzędnej z
 # nowo powstałego punktu podczas krzyżowania
-CR = 0.9;
+paramCR = 0.9;
 
 # funkcja definiujaca zakresy możliwych wartości dla każdego wymiaru
 # jednocześnie definiuje liczbę wymiarów: length(limits)
@@ -56,7 +61,7 @@ generateLimits = function() {
 # funkcja losująca populację startową
 # każda współrzędna ma rozkład jednostajny
 init = function(limits) {
-    populationSize = 10;
+    populationSize = 100;
     dimsCount = length(limits);
     
     population = list();
@@ -104,6 +109,12 @@ multiply = function(vec, number) {
     return(newVec);
 }
 
+# funkcja obliczająca współczynnik skalujący "a"
+calculateStretching = function(vec) {
+    # TODO
+    return(1);
+}
+
 # funkcja przesuwająca punkt o zadany wektor
 movePoint = function(point, vec) {
     if(length(point$coords) != length(vec)) return(list());
@@ -111,6 +122,25 @@ movePoint = function(point, vec) {
     newPoint = list();
     for(i in 1:length(vec)) {
         newPoint$coords[[i]] = point$coords[[i]]+vec[[i]];
+    }
+    return(newPoint);
+}
+
+# funkcja rzutująca punkt na krawędź przestrzeni przeszukiwań
+applyLimitsToPoint = function(point, spaceLimits) {
+    # TODO
+    newPoint = list();
+    for(i in 1:length(point$coords)) {
+        left = spaceLimits[[i]]$left;
+        right = spaceLimits[[i]]$right;
+        coord = point$coords[[i]];
+        if(coord < left) {
+            newPoint$coords[[i]] = left;
+        } else if(coord > right) {
+            newPoint$coords[[i]] = right;
+        } else {
+            newPoint$coords[[i]] = point$coords[[i]];
+        }
     }
     return(newPoint);
 }
@@ -124,11 +154,18 @@ crossOver = function(a, b, CR) {
 # funkcja zwracająca lepszy z dwóch punktów
 better = function(a, b) {
     # TODO
-    if(a$coords[[1]] > b$coords[[1]]) {
+    valueA = value(a);
+    valueB = value(b);
+    if(valueA > valueB) {
         return(a);
     } else {
         return(b);
     }
+}
+
+#funkcja obliczająca wartość funkcji celu w punkcie
+value = function(point) {
+    return(-point$coords[[1]]-point$coords[[2]]);
 }
 
 
@@ -158,7 +195,7 @@ showPopulation = function(population) {
 }
 
 # procedura przedstawiająca na wykresie bieżącą sytuację
-visualise = function(x_i, x, x_k, x_l, y, z, betterPoint) {
+visualise = function(x_i, x, x_k, x_l, y, yFixed, z, betterPoint) {
 #    xCoords = c(x_i$coords[[1]],
 #            x$coords[[1]],
 #            x_k$coords[[1]],
@@ -188,7 +225,8 @@ visualise = function(x_i, x, x_k, x_l, y, z, betterPoint) {
 #    showPoint(x_l, "green");
     showLine(x_l, x_k, "green");
     showPoint(y, "red");
-    showLine(x, y, "green");
+    showLine(x, y, "red");
+    showLine(x, yFixed, "green");
     showPoint(z, "purple");
     showPoint(betterPoint, "pink");
 }

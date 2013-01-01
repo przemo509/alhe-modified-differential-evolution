@@ -13,7 +13,6 @@ run = function() {
     
     iteration = 1;
     while(!stopAlgorithm(P, iteration)) {
-        showPopulation(P);
         tempP = list(); # populacja przechowująca wyniki pojedynczej iteracji (żeby nie nadpisywać w P)
         for(i in 1:length(P)) {
             x_i = P[[i]];
@@ -26,17 +25,20 @@ run = function() {
             paramA = calculateStretching(vF);
             vFA = multiply(vF, paramA);
             y = movePoint(x, vFA);
-            yFixed = applyLimitsToPoint(y, limits);
+            yFixed = applyLimitsToPoint(x, y, limits);
             
             z = crossOver(x_i, yFixed, paramCR);
             betterPoint = better(x_i, z);
             tempP[[i]] = betterPoint;
             
-            #visualise(x_i, x, x_k, x_l, y, yFixed, z, betterPoint);
+            visualise(P, limits, iteration, x_i, x, x_k, x_l, y, yFixed, z, betterPoint);
         }
         P = tempP;
         iteration = iteration+1;
     }
+    
+    visualise(P, limits, iteration, x_i, x, x_k, x_l, y, yFixed, z, betterPoint, TRUE);
+    return(P);
 }
 
 
@@ -53,8 +55,8 @@ paramCR = 0.9;
 # jednocześnie definiuje liczbę wymiarów: length(limits)
 generateLimits = function() {
     limits = list();
-    limits = c(limits, list(list(left=-5, right=5)));
-    limits = c(limits, list(list(left=-1, right=1)));
+    limits = c(limits, list(list(left=-6, right=6)));
+    limits = c(limits, list(list(left=-6, right=6)));
     return(limits);
 }
 
@@ -77,7 +79,7 @@ init = function(limits) {
         
         # budujemy wszystkie punkty na raz (j), współrzędna po współrzędnej (i)
         for(j in 1:populationSize) {
-            population[[j]]$coords = c(population[[j]]$coords, list(coordsList[[j]]));
+            population[[j]]$coords = c(population[[j]]$coords, coordsList[[j]]);
         }
     }
     return(population);
@@ -85,7 +87,35 @@ init = function(limits) {
 
 # funkcja określająca warunek stopu
 stopAlgorithm = function(population, iterationNo) {
-    return(iterationNo > 20); # najprymitywniejszy warunek na liczbę iteracji
+    if(iterationNo > 2000) return(TRUE); # górne ograniczenie na liczbę iteracji
+    
+    if(maxSpread(population) < 0.01) {
+        return(TRUE); # punkty są skupione wokół maksimum
+    } else {
+        return(FALSE);
+    }
+}
+
+maxSpread = function(population) {
+    spread = 0;
+    
+    dimsCount = length(population[[1]]$coords);
+    for(i in 1:dimsCount) {
+        minCoord = maxCoord = population[[1]]$coords[[i]];
+        for(j in 1:length(population)) {
+            if(population[[j]]$coords[[i]] < minCoord) {
+                minCoord = population[[j]]$coords[[i]];
+            }
+            if(population[[j]]$coords[[i]] > maxCoord) {
+                maxCoord = population[[j]]$coords[[i]];
+            }
+        }
+        if(maxCoord-minCoord > spread) {
+            spread = maxCoord - minCoord;
+        }
+    }
+    
+    return(spread);
 }
 
 # funckja zwracająca wektor będący różnicą punktów
@@ -104,7 +134,7 @@ pointsDifference = function(a, b) {
 multiply = function(vec, number) {
     newVec = list();
     for(i in 1:length(vec)) {
-        newVec = c(newVec, list(vec[[i]]*number));
+        newVec = c(newVec, vec[[i]]*number);
     }
     return(newVec);
 }
@@ -126,26 +156,50 @@ movePoint = function(point, vec) {
     return(newPoint);
 }
 
-# funkcja rzutująca punkt na krawędź przestrzeni przeszukiwań
-applyLimitsToPoint = function(point, spaceLimits) {
-    # TODO
-    newPoint = list();
-    for(i in 1:length(point$coords)) {
-        left = spaceLimits[[i]]$left;
-        right = spaceLimits[[i]]$right;
-        coord = point$coords[[i]];
-        if(coord < left) {
-            newPoint$coords[[i]] = left;
-        } else if(coord > right) {
-            newPoint$coords[[i]] = right;
-        } else {
-            newPoint$coords[[i]] = point$coords[[i]];
+# funkcja rzutująca punkt na krawędź przestrzeni przeszukiwań metodą bisekcji
+applyLimitsToPoint = function(a, b, spaceLimits) {
+    startPoint = a;
+    endPoint = b;
+    accuracy = 0.001;
+    
+    distance = maxDistanceToLimit(endPoint, spaceLimits);
+    if(distance < 0) return(endPoint); # jest wewnątrz
+    
+    while(TRUE) {
+        midPoint = list();
+        for(i in 1:length(spaceLimits)) {
+            midPoint$coords = c(midPoint$coords, (startPoint$coords[[i]] + endPoint$coords[[i]])/2);
+        }
+        
+        distance = maxDistanceToLimit(midPoint, spaceLimits);
+        if(distance < 0 && distance > -accuracy) { # midPoint na granicy, czyli znaleźliśmy przecięcie
+            ret = midPoint;
+            return(ret);
+        } else if(distance > 0) { # midPoint poza przestrzenią
+            endPoint = midPoint;
+        } else { # midPoint "za głęboko" w przestrzeni
+            startPoint = midPoint;
         }
     }
-    return(newPoint);
 }
 
-# funkcja krzyżyjąca dwa punkty
+# funkcja obliczająca dla punktu największe wysunięcie poza przestrzeń
+# ujemne oznacza położenie w granicach przestrzeni
+maxDistanceToLimit = function(point, spaceLimits) {
+    maxDistance = -Inf;
+    for(i in 1:length(spaceLimits)) {
+        coord = point$coords[[i]];
+        leftLimit = spaceLimits[[i]]$left;
+        rightLimit = spaceLimits[[i]]$right;
+        
+        distanceRight = coord - rightLimit;
+        distanceLeft = leftLimit - coord;
+        maxDistance = max(c(maxDistance, distanceLeft, distanceRight));
+    }
+    return(maxDistance);
+}
+
+# funkcja krzyżująca dwa punkty
 # przepisuje z p-stwem CR współrzędną z pierwszego z nich
 crossOver = function(a, b, CR) {
     return(b); # TODO
@@ -165,80 +219,146 @@ better = function(a, b) {
 
 #funkcja obliczająca wartość funkcji celu w punkcie
 value = function(point) {
-    return(-point$coords[[1]]-point$coords[[2]]);
+    x = point$coords[[1]];
+    y = point$coords[[2]];
+    return(value2D(x, y));
+}
+
+value2D = function(x, y) {
+    z = sin(x)*cos(y)+0.001*x+0.001*y;
+    return(z);
+}
+
+value3D = function(x, y, z) {
+    t = 1; # TODO
+    return(t);
 }
 
 
 ########################################################################
 # procedury pomocnicze, przydatne podczas debugowania i testowania
 
-# stała określająca czy testujemy program
-# jeśli TRUE, to m.in. wyświetlają się wykresy z populacjami
-test = TRUE;
+# parametry określające stopień testowania
+NO_TEST = 0;				# nie wyświetane są żadne rysunki ani wykresy
+SHOW_POPULATION = 1;		# pokazujemy wykres funkcji i populacje
+DEBUG_ALL = 10;				# pokazujemy wszystkie punkty charakterystyczne
+test = NO_TEST;
 
 # TODO sprawdzanie 2D
 
 # procedura rysująca punkty na wykresie
 # przydatna do testów
-showPopulation = function(population) {
-    if(!test) return;
+showPopulation = function(population, spaceLimits, iteration) {
+    if(length(population) == 0) return();
+    
+    if(length(population[[1]]$coords) == 2) {
+        showPopulation2D(population, spaceLimits, value2D);
+    } else if(length(population[[1]]$coords) == 3) {
+        showPopulation3D(population, spaceLimits, value3D);
+    }
+    
+    title(main = paste("Iteration ", iteration), font.main = 4,
+          sub = paste("Max spread is ", maxSpread(population)));
+}
+
+showPopulation2D = function(population, spaceLimits, valueFunction) {
+    showFunction2D(spaceLimits, valueFunction);
     
     pointsNo = length(population);
     x = list();
     y = list();
     for(i in 1:pointsNo) {
-        x = c(x, list(population[[i]]$coords[[1]]));
-        y = c(y, list(population[[i]]$coords[[2]]));
+        x = c(x, population[[i]]$coords[[1]]);
+        y = c(y, population[[i]]$coords[[2]]);
     }
     
-    plot(x, y);
+    points(x, y, pch=19);
+}
+
+showFunction2D = function(spaceLimits, valueFunction) {
+    xResolution = 50;
+    yResolution = 50;
+    zResolution = 100; # liczba kolorów
+    x = seq(spaceLimits[[1]]$left, spaceLimits[[1]]$right, length=xResolution);
+    y = seq(spaceLimits[[2]]$left, spaceLimits[[2]]$right, length=yResolution);
+    
+    z = outer(y, x, FUN=valueFunction);
+    
+    image(x, y, z, xlab='X', ylab='Y', col=gray.colors(zResolution));
+    contour(x, y, z, add=TRUE);
+}
+
+
+showPopulation3D = function(population, spaceLimits, valueFunction) {
+    # TODO
 }
 
 # procedura przedstawiająca na wykresie bieżącą sytuację
-visualise = function(x_i, x, x_k, x_l, y, yFixed, z, betterPoint) {
-#    xCoords = c(x_i$coords[[1]],
-#            x$coords[[1]],
-#            x_k$coords[[1]],
-#            x_l$coords[[1]],
-#            y$coords[[1]],
-#            z$coords[[1]],
-#            betterPoint$coords[[1]]);
-#    yCoords = c(x_i$coords[[2]],
-#            x$coords[[2]],
-#            x_k$coords[[2]],
-#            x_l$coords[[2]],
-#            y$coords[[2]],
-#            z$coords[[2]],
-#            betterPoint$coords[[2]]);
-#    labels = c("x_i",
-#            "x",
-#            "x_k",
-#            "x_l",
-#            "y",
-#            "z",
-#            "betterPoint");
-#    text(xCoords, yCoords, labels);
+visualise = function(population, spaceLimits, iteration,
+                     x_i, x, x_k, x_l, y, yFixed, z, betterPoint,
+                     forceVisualisation=FALSE) {
+                 
+    if(test >= SHOW_POPULATION || forceVisualisation) {
+        showPopulation(population, spaceLimits, iteration);
+    }
+    
+    if(test < DEBUG_ALL && !forceVisualisation) return();
     
     showPoint(x_i, "red");
     showPoint(x, "blue");
-#    showPoint(x_k, "green");
-#    showPoint(x_l, "green");
+    showPoint(x_k, "green");
+    showPoint(x_l, "green");
     showLine(x_l, x_k, "green");
-    showPoint(y, "red");
+    showPoint(y, "orange");
     showLine(x, y, "red");
     showLine(x, yFixed, "green");
-    showPoint(z, "purple");
-    showPoint(betterPoint, "pink");
+    showPoint(z, "purple", 20);
+    showPoint(betterPoint, "cyan", 20);
+    
+    par(xpd=TRUE); # rysowanie poza wykresem
+    legend(spaceLimits[[1]]$right-1, spaceLimits[[2]]$left+1,
+           c("xi", "x", "xk, xl", "y", "z", "better"),
+           fill=c("red", "blue", "green", "orange", "purple", "cyan"));
 }
 
 # procedura wyświetlająca punkt na wykresie
-showPoint = function(point, color) {
-    if(!test) return;
-    points(point$coords[[1]], point$coords[[2]], col=color);
+showPoint = function(point, color, pointType=19) {
+    points(point$coords[[1]], point$coords[[2]], col=color, pch=pointType);
 }
 
 # procedura wyświetlająca linię na wykresie
 showLine = function(startPoint, endPoint, color) {
-    if(!test) return;
     segments(startPoint$coords[[1]], startPoint$coords[[2]], endPoint$coords[[1]], endPoint$coords[[2]], col=color);
+}
+
+
+
+
+
+
+
+runUnusual = function() {
+    iteration = 1;
+    while(TRUE) {
+        population = run();
+        solution = average(population);
+        print(paste("solution nr ", iteration, " is ", solution, " and value is ", value(solution)));
+        if(solution$coords[[1]] < 4.7 || solution$coords[[1]] > 4.8 ||
+           solution$coords[[2]] < 3.1 || solution$coords[[2]] > 3.2) return();
+        iteration = iteration +1;
+    }
+}
+
+average = function(population) {
+    avgPoint = list();
+    for(i in 1:length(population[[1]]$coords)) {
+        coordsSum = 0;
+        for(j in 1:length(population)) {
+            coordsSum = coordsSum + population[[j]]$coords[[i]];
+        }
+        
+        avgCoord = coordsSum / length(population);
+        avgPoint$coords = c(avgPoint$coords, avgCoord);
+    }
+    return(avgPoint);
 }

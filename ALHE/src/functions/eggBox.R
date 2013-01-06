@@ -16,13 +16,13 @@ initLimitLeft = limitLeft;
 initLimitRight = limitRight;
 
 # punkt przestrzeni, dla którego funkcja osiąga optimum
-#optimum = c(4.7, 3.2);
+optimum = c(4.8130704607058, 3.24226992395493);
 
 # wartość funkcji w swoim optimum
-#optimumValue = 1.7;
+optimumValue = 1.79543190402852;
 
 # dopuszczalna różnica między wartością rozwiązania znalezionego przez algorytm a rzeczywistym optimum
-accuracy = 0.1;
+accuracy = 1e-18;
 
 # liczba rozpatrywanych wymiarów
 dimensions = 2;

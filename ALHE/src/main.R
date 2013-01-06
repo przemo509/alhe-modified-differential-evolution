@@ -26,12 +26,18 @@ paramCR = 0.9;
 ##############################################################################
 run = function() {
     verifyFunction();
+    print("===== START =====");
+    print(paste("FUNKCJA:", functionName));
     
 	P = init(); # populacja startowa
     bestPointSoFar = bestFromPopulation(P);
     
     iteration = 1;
     while(!stopAlgorithm(P, bestPointSoFar, iteration)) {
+        if(test >= SHOW_POPULATION) {
+            showPopulation(P, iteration);
+        }
+        
         tempP = list(); # populacja przechowująca wyniki pojedynczej iteracji (żeby nie nadpisywać w P)
         for(i in 1:populationSize) {
             x_i = P[[i]];
@@ -48,15 +54,24 @@ run = function() {
             betterPoint = tournament(x_i, z);
             tempP[[i]] = betterPoint;
             
-            visualise(P, iteration, x_i, x, x_k, x_l, y, yFixed, z, betterPoint);
+            if(test >= DEBUG_ALL) {
+                visualise(P, iteration, x_i, x, x_k, x_l, y, yFixed, z, betterPoint);
+            }
+                
+            
         }
         P = tempP;
         bestPointSoFar = bestFromPopulation(P);
+        print(paste("Iteration's best value:", value(bestPointSoFar),
+                    "; Accuracy is:", abs(value(bestPointSoFar)-optimumValue),
+                    "; Population spread is:", maxSpread(P),
+                    "; Best point:"));
+        print(bestPointSoFar);
         iteration = iteration+1;
     }
     
-    visualise(P, iteration, x_i, x, x_k, x_l, y, yFixed, z, betterPoint, forceVisualisation=TRUE);
-    return(P);
+    visualise(P, iteration, x_i, x, x_k, x_l, y, yFixed, z, betterPoint);
+    return(bestPointSoFar);
 }
 
 
@@ -89,10 +104,11 @@ verifyFunction = function() {
         if(initLimitLeft >= initLimitRight) {ok = FALSE; print("Parametr 'initLimitLeft' musi byc mniejszy od 'initLimitRight'");}
     }
     if(exists("optimum") && exists("dimensions")) {
-        if(length(optimum) > dimensions) {ok = FALSE; print("Parametr 'optimum' ma wiecej wymiarow niz wynosi wartosc 'dimensions'.");}
+        if(length(optimum) < dimensions) {ok = FALSE; print("Parametr 'optimum' ma mniej wymiarow niz wynosi wartosc 'dimensions'.");}
     }
     if(exists("examinedFunction") && exists("optimum") && exists("accuracy") && exists("optimumValue")) {
-        if(examinedFunction(optimum)-accuracy < optimumValue || examinedFunction(optimum)+accuracy > optimumValue) {
+        calculatedValue = examinedFunction(optimum); 
+        if(calculatedValue < optimumValue-accuracy || calculatedValue > optimumValue+accuracy) {
             ok = FALSE;
             print("Wartosc funkcji w 'optimum' nie wynosi 'optimumValue'");
         }
@@ -133,7 +149,7 @@ stopAlgorithm = function(population, best, iterationNo) {
     if(exists("optimumValue")) {
         # warunek na jakość najlepszego punktu
         bestValue = value(best);
-        if(bestValue - accuracy >= optimumValue && bestValue + accuracy <= optimumValue) {
+        if(bestValue >= optimumValue-accuracy && bestValue <= optimumValue+accuracy) {
             return(TRUE);
         } else {
             return(FALSE);
@@ -181,16 +197,13 @@ calculateStretching = function(vec) {
 applyLimitsToPoint = function(a, b) {
     startPoint = a;
     endPoint = b;
-    bisectionAccuracy = 0.001;
+    bisectionAccuracy = 0.01;
     
     distance = maxDistanceToLimit(endPoint);
     if(distance < 0) return(endPoint); # jest wewnątrz
     
     while(TRUE) {
-        midPoint = list();
-        for(i in 1:dimensions) {
-            midPoint = c(midPoint, (startPoint[[i]] + endPoint[[i]])/2);
-        }
+        midPoint = (startPoint + endPoint)/2;
         
         distance = maxDistanceToLimit(midPoint);
         if(distance < 0 && distance > -bisectionAccuracy) { # midPoint na granicy, czyli znaleźliśmy przecięcie
@@ -209,10 +222,10 @@ applyLimitsToPoint = function(a, b) {
 maxDistanceToLimit = function(point) {
     maxDistance = -Inf;
     for(i in 1:dimensions) {
-        coord = point[[i]];
+        coord = point[i];
         
         distanceRight = coord - limitRight;
-        distanceLeft = limitRight - coord;
+        distanceLeft = limitLeft - coord;
         maxDistance = max(c(maxDistance, distanceLeft, distanceRight));
     }
     return(maxDistance);
@@ -249,7 +262,7 @@ value = function(point) {
 NO_TEST = 0;				# nie wyświetane są żadne rysunki ani wykresy
 SHOW_POPULATION = 1;		# pokazujemy wykres funkcji i populacje
 DEBUG_ALL = 10;				# pokazujemy wszystkie punkty charakterystyczne
-test = DEBUG_ALL;
+test = SHOW_POPULATION;
 
 # TODO sprawdzanie 2D
 
@@ -280,13 +293,19 @@ showPopulation2D = function(population) {
 }
 
 showFunction2D = function() {
+    if(!exists("value2D")) return();
     xResolution = 50;
     yResolution = 50;
     zResolution = 100; # liczba kolorów
     x = seq(limitLeft, limitRight, length=xResolution);
     y = seq(limitLeft, limitRight, length=yResolution);
     
-    z = outer(y, x, FUN=value);
+    z = matrix(ncol=length(x), nrow=length(y));
+    for(i in 1:length(x)) {
+        for(j in 1:length(y)) {
+            z[i,j] = value(c(x[i], y[j]));
+        }
+    }
     
     image(x, y, z, xlab='X', ylab='Y', col=gray.colors(zResolution));
     contour(x, y, z, add=TRUE);
@@ -299,14 +318,9 @@ showPopulation3D = function(population) {
 
 # procedura przedstawiająca na wykresie bieżącą sytuację
 visualise = function(population, iteration,
-                     x_i, x, x_k, x_l, y, yFixed, z, betterPoint,
-                     forceVisualisation=FALSE) {
-                 
-    if(test >= SHOW_POPULATION || forceVisualisation) {
-        showPopulation(population, iteration);
-    }
+                     x_i, x, x_k, x_l, y, yFixed, z, betterPoint) {
     
-    if(test < DEBUG_ALL && !forceVisualisation) return();
+    showPopulation(population, iteration);
     
     showPoint(x_i, "red");
     showPoint(x, "blue");

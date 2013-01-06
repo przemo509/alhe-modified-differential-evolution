@@ -40,5 +40,6 @@ examinedFunction = function(point) {
     for(i in 1:dimensions) { # suma kwadratów różnic
         result = result + (point[i] - optimum[i])*(point[i] - optimum[i]);
     }
+    result = result + optimumValue;
     return(result);
 }

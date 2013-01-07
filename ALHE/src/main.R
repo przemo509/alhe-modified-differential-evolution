@@ -170,13 +170,13 @@ maxSpread = function(population) {
     spread = 0;
     
     for(i in 1:dimensions) {
-        minCoord = maxCoord = population[[1]][[i]];
+        minCoord = maxCoord = population[[1]][i];
         for(j in 1:length(population)) {
-            if(population[[j]][[i]] < minCoord) {
-                minCoord = population[[j]][[i]];
+            if(population[[j]][i] < minCoord) {
+                minCoord = population[[j]][i];
             }
-            if(population[[j]][[i]] > maxCoord) {
-                maxCoord = population[[j]][[i]];
+            if(population[[j]][i] > maxCoord) {
+                maxCoord = population[[j]][i];
             }
         }
         if(maxCoord-minCoord > spread) {
@@ -264,7 +264,7 @@ SHOW_POPULATION = 1;		# pokazujemy wykres funkcji i populacje
 DEBUG_ALL = 10;				# pokazujemy wszystkie punkty charakterystyczne
 test = SHOW_POPULATION;
 
-# TODO sprawdzanie 2D
+# TODO sprawdzanie 2D + wygodniejsze i czytelniejsze wizualizacje + wypisywanie na konsolę
 
 # procedura rysująca punkty na wykresie
 # przydatna do testów
@@ -275,8 +275,8 @@ showPopulation = function(population, iteration) {
         showPopulation3D(population);
     }
     
-    title(main = paste("Iteration ", iteration), font.main = 4,
-          sub = paste("Max spread is ", maxSpread(population)));
+    title(main = functionName, font.main = 4,
+          sub = paste("Iteration:", iteration, "Max spread is", maxSpread(population)));
 }
 
 showPopulation2D = function(population) {
@@ -285,8 +285,8 @@ showPopulation2D = function(population) {
     x = list();
     y = list();
     for(i in 1:populationSize) {
-        x = c(x, population[[i]][[1]]);
-        y = c(y, population[[i]][[2]]);
+        x = c(x, population[[i]][1]);
+        y = c(y, population[[i]][2]);
     }
     
     points(x, y, pch=19);
@@ -341,12 +341,12 @@ visualise = function(population, iteration,
 
 # procedura wyświetlająca punkt na wykresie
 showPoint = function(point, color, pointType=19) {
-    points(point[[1]], point[[2]], col=color, pch=pointType);
+    points(point[1], point[2], col=color, pch=pointType);
 }
 
 # procedura wyświetlająca linię na wykresie
 showLine = function(startPoint, endPoint, color) {
-    segments(startPoint[[1]], startPoint[[2]], endPoint[[1]], endPoint[[2]], col=color);
+    segments(startPoint[1], startPoint[2], endPoint[1], endPoint[2], col=color);
 }
 
 
@@ -361,8 +361,8 @@ runStats = function() {
         population = run();
         solution = bestFromPopulation(population);
         print(paste("solution nr ", iteration, " is ", solution, " and value is ", value(solution)));
-#        if(solution[[1]] < 4.6 || solution[[1]] > 4.9 ||
-#           solution[[2]] < 3.0 || solution[[2]] > 3.4) return();
+#        if(solution[1] < 4.6 || solution[1] > 4.9 ||
+#           solution[2] < 3.0 || solution[2] > 3.4) return();
         iteration = iteration +1;
     }
 }

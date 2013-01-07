@@ -5,6 +5,9 @@
 # Author: Przemysław Sadło
 ###############################################################################
 
+# nazwa funkcji, wyświetlana na starcie algorytmu w celu jej identyfikacji
+functionName = "F3: Shifted Rotated High Conditioned Elliptic Function";
+
 # minimalizacja czy maksymalizacja funkcji ("min", "max")
 better = "min";
 
@@ -17,30 +20,31 @@ initLimitLeft = limitLeft;
 initLimitRight = limitRight;
 
 # punkt przestrzeni, dla którego funkcja osiąga optimum
-optimum = c(-3.2201300e+001,6.4977600e+001,-3.8300000e+001,-2.3258200e+001,-5.4008800e+001,8.6628600e+001,-6.3009000e+000,-4.9364400e+001,5.3499000e+000,5.2241800e+001,-1.3364300e+001,7.3126300e+001,-8.5691000e+000,-2.0491500e+001,-6.0148700e+001,1.6088400e+001,-7.8331900e+001,7.0038700e+001,-6.8521000e+000,-6.4797000e+001,6.5400500e+001,-2.6023300e+001,-3.3875700e+001,5.1589300e+001,2.7642700e+001,-6.9448500e+001,2.5512300e+001,-5.9078200e+001,-6.6548100e+001,-5.1273300e+001,-8.1776000e+001,-7.1657200e+001,3.7081000e+001,-6.3424800e+001,-6.4778500e+001,3.1529900e+001,1.8538700e+001,9.8342000e+000,-6.0370000e-001,1.7346000e+000,7.0160500e+001,-8.2039100e+001,-4.2736800e+001,-8.3593000e+001,-8.5025500e+001,4.1177300e+001,4.1649000e+000,-1.3450500e+001,-3.1000000e-001,-3.8794400e+001,7.1270200e+001,6.5532000e+001,8.7753000e+000,-5.5469100e+001,-2.0625200e+001,2.2290100e+001,1.3679800e+001,6.5674500e+001,7.5841800e+001,2.7892600e+001,-1.5061600e+001,-1.7303600e+001,5.7934600e+001,-8.6632600e+001,6.5059600e+001,4.7388400e+001,2.9166000e+001,6.5543500e+001,3.4643000e+000,-3.9814000e+001,1.8226100e+001,7.7044600e+001,6.2188200e+001,-1.1400000e+001,-1.0621800e+001,7.0127600e+001,-4.0867300e+001,-2.4445100e+001,5.2139800e+001,-1.0513600e+001,2.9239900e+001,2.1705000e+000,4.4086300e+001,8.1794300e+001,8.0046600e+001,8.8326600e+001,1.6609800e+001,-5.0257300e+001,-7.1699300e+001,7.1536800e+001,6.1427300e+001,-3.6739000e+000,7.7942800e+001,-2.2329400e+001,6.4763400e+001,-7.4282300e+001,1.4189900e+001,3.7847300e+001,-7.7712900e+001,2.8995900e+001);
+optimum = scan("../data/high_cond_elliptic_rot_data.txt", quiet = TRUE);
 
 # wartość funkcji w swoim optimum
-optimumValue = -450;
+optimumValue = scan("../data/fbias_data.txt", quiet = TRUE)[3];
 
 # dopuszczalna różnica między wartością rozwiązania znalezionego przez algorytm a rzeczywistym optimum
 accuracy = 1e-8;
 
 # liczba rozpatrywanych wymiarów
-dimensions = 2; # 10, 30, 50, max = 100
+dimensions = 2; # 10, 30, 50
 
 # maksymalna liczba iteracji algorytmu, warunek definitywnie kończący jego pracę
 maxIterations = 1e+4*dimensions;
 
-# nazwa funkcji, wyświetlana na starcie algorytmu w celu jej identyfikacji
-functionName = "F3: Shifted Rotated High Conditioned Elliptic Function";
+# pomocnicza macierz M, potrzebna do obliczania wartości funkcji
+matrixFileName = paste("../data/elliptic_M_D", dimensions, ".txt", sep = "");
+M = matrix(scan(matrixFileName, quiet = TRUE), ncol = dimensions);
 
 # definicja funkcji poddawanej optymalizacji
 examinedFunction = function(point) {
+    z = t((point - optimum)[1:dimensions]%*%M);
+    
     result = 0;
     for(i in 1:dimensions) {
-        for(j in 1:i) {
-            result = result + (point[i] - optimum[i])*(point[i] - optimum[i]);
-        }
+        result = result + ((1e6)^((i-1)/(dimensions-1)))*z[i]*z[i];
     }
     result = result + optimumValue;
     return(result);

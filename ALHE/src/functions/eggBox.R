@@ -4,6 +4,9 @@
 # Author: Przemysław Sadło
 ###############################################################################
 
+# nazwa funkcji, wyświetlana na starcie algorytmu w celu jej identyfikacji
+functionName = "EggBox, nachylenie: 0.1";
+
 # minimalizacja czy maksymalizacja funkcji ("min", "max")
 better = "max";
 
@@ -22,16 +25,13 @@ optimum = c(4.8130704607058, 3.24226992395493);
 optimumValue = 1.79543190402852;
 
 # dopuszczalna różnica między wartością rozwiązania znalezionego przez algorytm a rzeczywistym optimum
-accuracy = 1e-18;
+accuracy = 1e-8;
 
 # liczba rozpatrywanych wymiarów
 dimensions = 2;
 
 # maksymalna liczba iteracji algorytmu, warunek definitywnie kończący jego pracę
 maxIterations = 1000;
-
-# nazwa funkcji, wyświetlana na starcie algorytmu w celu jej identyfikacji
-functionName = "EggBox, nachylenie: 0.1";
 
 # definicja funkcji poddawanej optymalizacji
 examinedFunction = function(point) {

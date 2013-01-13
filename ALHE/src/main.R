@@ -8,8 +8,22 @@
 # TODO poprawić komentarza, w tym autor
 #
 ##############################################################################
+# parametry określające stopień testowania
+##############################################################################
+NO_TEST = 0;				# nie wyświetane są żadne rysunki ani wykresy
+SHOW_POPULATION = 1;		# pokazujemy wykres funkcji i populacje
+DEBUG_ALL = 10;				# pokazujemy wszystkie punkty charakterystyczne
+test = SHOW_POPULATION;
+
+# TODO sprawdzanie 2D + wygodniejsze i czytelniejsze wizualizacje + wypisywanie na konsolę
+
+
+##############################################################################
 # parametry algorytmu ewolucyjnego
 ##############################################################################
+
+# wykorzystanie współczynnika skalującego "a"
+stretchingOn = TRUE;
 
 # rozmiar populacji - liczba punktów
 populationSize = 100;
@@ -45,8 +59,9 @@ run = function() {
             x_k = sample(P, size = 1)[[1]];
             x_l = sample(P, size = 1)[[1]];
             
-            paramA = calculateStretching(v);
-            v = paramF * paramA * (x_k - x_l);
+            v_Raw = x_k - x_l;
+            paramA = calculateStretching(v_Raw);
+            v = paramF * paramA * v_Raw;
             y = x + v;
             yFixed = applyLimitsToPoint(x, y);
             
@@ -62,11 +77,6 @@ run = function() {
         }
         P = tempP;
         bestPointSoFar = bestFromPopulation(P);
-        print(paste("Iteration's best value:", value(bestPointSoFar),
-                    "; Accuracy is:", abs(value(bestPointSoFar)-optimumValue),
-                    "; Population spread is:", maxSpread(P),
-                    "; Best point:"));
-        print(bestPointSoFar);
         iteration = iteration+1;
     }
     
@@ -189,8 +199,20 @@ maxSpread = function(population) {
 
 # funkcja obliczająca współczynnik skalujący "a"
 calculateStretching = function(vec) {
-    # TODO
-    return(1);
+    if(!stretchingOn || vec == 0) {
+        return(1);
+    }
+    
+    d = abs(vec);
+    sumOfSquares = 0;
+    for(i in 1:dimensions) {
+        sumOfSquares = sumOfSquares + vec[i]*vec[i];
+    }
+    mod_d = sqrt(sumOfSquares); # moduł wektora
+    d_norm = d / mod_d; # wektor znormalizowany
+    maxCoord = max(d_norm);
+    a = 1 / maxCoord;
+    return(a);
 }
 
 # funkcja rzutująca punkt na krawędź przestrzeni przeszukiwań metodą bisekcji
@@ -200,13 +222,15 @@ applyLimitsToPoint = function(a, b) {
     bisectionAccuracy = 0.01;
     
     distance = maxDistanceToLimit(endPoint);
-    if(distance < 0) return(endPoint); # jest wewnątrz
+    if(distance < 0) {
+        return(endPoint); # jest wewnątrz
+    }
     
     while(TRUE) {
         midPoint = (startPoint + endPoint)/2;
         
         distance = maxDistanceToLimit(midPoint);
-        if(distance < 0 && distance > -bisectionAccuracy) { # midPoint na granicy, czyli znaleźliśmy przecięcie
+        if(distance <= 0 && distance > -bisectionAccuracy) { # midPoint na granicy, czyli znaleźliśmy przecięcie
             ret = midPoint;
             return(ret);
         } else if(distance > 0) { # midPoint poza przestrzenią
@@ -258,17 +282,15 @@ value = function(point) {
 ########################################################################
 # procedury pomocnicze, przydatne podczas debugowania i testowania
 
-# parametry określające stopień testowania
-NO_TEST = 0;				# nie wyświetane są żadne rysunki ani wykresy
-SHOW_POPULATION = 1;		# pokazujemy wykres funkcji i populacje
-DEBUG_ALL = 10;				# pokazujemy wszystkie punkty charakterystyczne
-test = SHOW_POPULATION;
-
-# TODO sprawdzanie 2D + wygodniejsze i czytelniejsze wizualizacje + wypisywanie na konsolę
-
 # procedura rysująca punkty na wykresie
-# przydatna do testów
 showPopulation = function(population, iteration) {
+    bestPointSoFar = bestFromPopulation(population);
+    print(paste("Iteration:", iteration, "; best value:", value(bestPointSoFar),
+                    "; Accuracy is:", abs(value(bestPointSoFar)-optimumValue),
+                    "; Population spread is:", maxSpread(population),
+                    "; Best point's coordinates:"));
+    print(bestPointSoFar);
+    
     if(dimensions == 2) {
         showPopulation2D(population);
     } else if(dimensions == 3) {

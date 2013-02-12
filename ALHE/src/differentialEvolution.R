@@ -1,4 +1,4 @@
-# TODO: Add comment
+# Algorytm ewolujci różnicowej z modyfikacja współczynnika kierunkowego.
 # 
 # Author: psadlo
 ###############################################################################
@@ -8,20 +8,21 @@
 ###############################################################################
 # procedura główna, silnik algorytmu
 ###############################################################################
-testFunction = function() {
+testFunction = function(stretchingOn) {
     currFES <<- 0;
     
     initPopulation();
     bestPointSoFar = bestFromPopulation();
+    partialResult = initResultPart();
     
     iteration = 1;
     while(!stopAlgorithm(bestPointSoFar, iteration)) {
         showPopulation();
-        loggerDEBUG("Iteration: ", iteration);
-        loggerDEBUG("  Best value: ", bestPointSoFar$value);
-        loggerDEBUG("  Accuracy is: ", abs(bestPointSoFar$value-optimumValue));
-        loggerDEBUG("  Population spread is: ", maxSpread());
-        loggerDEBUG("  Best point's coordinates:", bestPointSoFar$coords, separator=" ");
+        loggerDEBUG("It. [", iteration,
+                 "], Best [", bestPointSoFar$value,
+                 "], Err [", errorValue(bestPointSoFar),
+                 "], Spread [", maxSpread(),
+                 "], Coords [", paste(bestPointSoFar$coords, collapse=", "), "]");
         
         tempP = list(); # populacja przechowująca wyniki pojedynczej iteracji (żeby nie nadpisywać w P)
         for(i in 1:populationSize) {
@@ -31,7 +32,7 @@ testFunction = function() {
             x_l = sample(population, size = 1)[[1]]$coords;
             
             v_Raw = x_k - x_l;
-            paramA = calculateStretching(v_Raw);
+            paramA = calculateStretching(v_Raw, stretchingOn);
             v = paramF * paramA * v_Raw;
             y = x + v;
             yFixed = applyLimitsToPoint(x, y);
@@ -42,13 +43,22 @@ testFunction = function() {
             betterPoint = tournament(x_i, z);
             tempP[[i]] = betterPoint;
             
+            partialResult = buildResultPartIfNeeded(partialResult, bestPointSoFar);
             visualise(x_i$coords, x, x_k, x_l, y, yFixed, z$coords, betterPoint$coords);
         }
         population <<- tempP;
         bestPointSoFar = bestFromPopulation();
         iteration = iteration+1;
     }
-    return(bestPointSoFar);
+    
+    showPopulation();
+    loggerDEBUG("It. [", iteration,
+            "], Best [", bestPointSoFar$value,
+            "], Err [", errorValue(bestPointSoFar),
+            "], Spread [", maxSpread(),
+            "], Coords [", paste(bestPointSoFar$coords, collapse=", "), "]");
+    partialResult = finishResultPart(partialResult, bestPointSoFar);
+    return(partialResult);
 }
 
 
@@ -77,13 +87,15 @@ bestFromPopulation = function() {
 # funkcja określająca warunek stopu
 stopAlgorithm = function(best, iteration) {
     # podczas debugowania zbyt długo trwa rysowanie wszystkich punktów na wykresie
-    if(test == DEBUG_ALL && iteration > 100) return(TRUE);
+#    if(loggingLevel == LVL_DEBUG && iteration > 100) return(TRUE);
     # warunek na liczbę ewaluacji funkcji celu
+    loggerINFO("D=[", dimensions, "], I=[", iteration, "], FES=[", currFES, "], BEST=[",best$value, "]");
     if(currFES > maxFES) return(TRUE);
     
     if(!is.null(optimumValue)) {
         # warunek na jakość najlepszego punktu
-        if(best$value >= optimumValue-terErr && best$value <= optimumValue+terErr) {
+        accuracy = errorValue(best);
+        if(accuracy < terErr) {
             return(TRUE);
         } else {
             return(FALSE);
@@ -92,7 +104,7 @@ stopAlgorithm = function(best, iteration) {
         # jeśli nie znamy najlepszego punktu (np. chcemy go dopiero wyznaczyć)
         # to można rozpatrywać skupienie populacji
         if(maxSpread() < 0.001) {
-            return(TRUE); # punkty są skupione wokół optimum
+            return(TRUE); # punkty są skupione wokół jednego optimum
         } else {
             return(FALSE);
         }
@@ -122,7 +134,7 @@ maxSpread = function() {
 }
 
 # funkcja obliczająca współczynnik skalujący "a"
-calculateStretching = function(vec) {
+calculateStretching = function(vec, stretchingOn) {
     if(!stretchingOn || vec == 0) {
         return(1);
     }
@@ -208,5 +220,10 @@ value = function(point) {
     result = examinedFunction(point);
     currFES <<- currFES+1;
     return(result);
+}
+
+# funkcja zwracająca bieżący błąd, czyli różnicę wartości między opotimum a bieżącym najleszym punktem
+errorValue = function(point) {
+    return(abs(point$value - optimumValue));
 }
 

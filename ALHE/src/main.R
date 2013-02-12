@@ -2,49 +2,72 @@
 # 
 # Author: Przemysław Sadło
 ###############################################################################
-# TUTORIAL:
-# http://zoonek2.free.fr/UNIX/48_R/02.html
-# rm(list = ls(all = TRUE))
-# TODO poprawić komentarze, w tym autora, poprawić readme
-#
-# TODO sprawdzanie 2D + wygodniejsze i czytelniejsze wizualizacje + wypisywanie na konsolę
 
 ###############################################################################
 # uruchomienie benchmarku, punkt startowy
 ###############################################################################
 run = function() {
-    print("===== START =====");
-    shell("rm ../results/aa.txt");
+    rm(list = ls(all = TRUE));  # upewniamy się, że nie ma żadnych śmieci (np. z poprzednich uruchomień)
+    							# wymazane zostają również wartości zmiennych lokalnych, dlatego nie można umieścić tego w init()
     init("functions/cec2005problems.R");
+    loggerCONSOLE("===== START =====\n");
     
-    benchmarkResults = list();
-    
+    allRuns = length(availableFunctions) * length(availableDimensions) * howManyRuns;
+    currRun = 0;
     for (functionNumber in availableFunctions) {
+        initFunction(functionNumber);
         for(dims in availableDimensions) {
-            initFunction(functionNumber, dims);
-            benchmarkResults = testFunction();
+            initDimsSpecifics(functionNumber, dims);
+            for(runNo in 1:howManyRuns) {
+                currRun = currRun + 1;
+                loggerCONSOLE("Postep: ", 100 * currRun / allRuns, " %                             \r");
+                if(alreadyTested(functionNumber, dims, runNo)) next;
+                
+                oldSeed = .Random.seed;
+                loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dims, ", przebieg: ", runNo, ", OFF");
+                resultOff = testFunction(stretchingOn=FALSE);
+                
+                
+                .Random.seed <<- oldSeed;
+                loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dims, ", przebieg: ", runNo, ", ON");
+                resultOn = testFunction(stretchingOn=TRUE);
+                
+                saveResults(functionNumber, dims, runNo, resultOff, resultOn);
+            }
         }
     }
     
-    print("===== END =====");
+    loggerCONSOLE("\n=====  END  =====\n");
+    return("OK");
 }
 
 # ładowanie potrzebnych plików i weryfikowanie ich poprawności
 init = function(functionFile) {
+    runif(1);                           # inicjujemy ziarno losowości (po tym dopiero utworzy się '.Random.seed')
+    source("utilities/globals.R");      # pierwsze, żeby inne pliki mogły nadpisać NULLe
     source("differentialEvolution.R");
-    source("globals.R");
-    source("logging.R");
+    source("utilities/logging.R");
     initLogging();
-    source("verification.R");
-    source("visualisation.R");
-    source(functionFile); # ostatnie, bo nadpisuje kilka zmiennych globalnych
+    source("utilities/results_building.R");
+    source("utilities/verification.R");
+    source("utilities/visualisation.R");
+    source("functions/cec2005implementations.R");
+    source(functionFile);
     verifyFunctionToLoad();
+    initResults(); # musi być po verifyFunctionToLoad()
 }
 
 # inicjalizacja funkcji celu (w tym zmiennych globalnych i tego co od nich zależy, np. wykresu 2D)
-initFunction = function(functionNumber, dims) {
+initFunction = function(functionNumber) {
+    loadFunction(functionNumber);
+}
+
+# inicjalizacja parametrów funkcji celu zależnych od liczby wymiarów: maxFES i optimum
+initDimsSpecifics = function(functionNumber, dims) {
     dimensions <<- dims;
-    loadFunction(functionNumber, dimensions);
-    verifyLoadedFunction();
+    loadDimsSpecifics(functionNumber, dimensions);
+    verifyLoadedFunction(functionNumber);
     initVisualisation();
+    showFunction2D();
+    i=1;
 }

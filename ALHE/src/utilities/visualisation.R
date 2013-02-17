@@ -4,38 +4,34 @@
 ###############################################################################
 # 
 
-initVisualisation = function() {
-    initDataForPlot2D();
-}
 # generujemy dane dla wykresu 2D, żeby nie obliczać tego za każdym razem, kiedy chcemy go rysować
-initDataForPlot2D = function() {
+initVisualisation = function() {
     if(loggingLevel < LVL_DEBUG) return();
     
-    xResolution = 50;
-    yResolution = 50;
-    x = seq(limitLeft, limitRight, length=xResolution);
-    y = seq(limitLeft, limitRight, length=yResolution);
+    xResolution = 1e3;
+    yResolution = 1e3;
+    zResolution = 1e5; # liczba kolorów
     
-    z = matrix(ncol=length(x), nrow=length(y));
-    loggerINFO("Generowanie danych do wykresu. Ten proces może potrwać parę sekund...");
-    for(i in 1:length(x)) {
-        for(j in 1:length(y)) {
-            z[i,j] = value(c(x[i], y[j]));
-        }
-    }
-    loggerINFO("Generowanie danych do wykresu - KONIEC.");
+    xAxis = seq(limitLeft, limitRight, length=xResolution);
+    yAxis = seq(limitLeft, limitRight, length=yResolution);
+    xCoords = rep(xAxis, times = yResolution);
+    yCoords = rep(yAxis, each = xResolution);
+    xyCoords = cbind(xCoords, yCoords);
+    
+    results = value(xyCoords); # funkcja celu wołana jest raz dla miliona punktów, co trwa 0.1 sekundy
+    
+    resultsMatrix = matrix(results, ncol = xResolution);
+    image(xAxis, yAxis, resultsMatrix, useRaster=TRUE,
+          col=gray.colors(zResolution, start = 0, end = 1));
+    contour(xAxis, yAxis, resultsMatrix, nlevels = 20, add=TRUE);
+    functionPlot <<- recordPlot();
     
     currFES <<- 0; # zerujemy licznik wywołań funkcji, bo te powyższe nie dotyczą algorytmu
-    
-    plotData <<- list();
-    plotData$x <<- x;
-    plotData$y <<- y;
-    plotData$z <<- z;
 }
 
 # procedura rysująca punkty na wykresie
 showPopulation = function() {
-    if(loggingLevel < LVL_DEBUG) return();
+    if(loggingLevel < LVL_SHOW_POPULATION) return();
     
     showFunction2D();
     
@@ -50,12 +46,9 @@ showPopulation = function() {
 }
 
 showFunction2D = function() {
-    if(loggingLevel < LVL_DEBUG) return();
+    if(loggingLevel < LVL_SHOW_POPULATION) return();
     
-    zResolution = 100; # liczba kolorów
-    # TODO robić to tylko raz dla funkcji
-    image(plotData$x, plotData$y, plotData$z, xlab='X', ylab='Y', col=gray.colors(zResolution), useRaster=TRUE);
-    contour(plotData$x, plotData$y, plotData$z, add=TRUE);
+    replayPlot(functionPlot);
 }
 
 # procedura szczegółowo przedstawiająca na wykresie bieżącą sytuację

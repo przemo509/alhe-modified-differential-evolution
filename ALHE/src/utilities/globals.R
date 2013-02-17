@@ -58,4 +58,4 @@ fixedAccuracy=NULL;         # wymagana przez benchmark dokładność (trzeba dla
 dimensions = NULL;          # bierząca liczba wymiarów, po kolei z 'availableDimensions'
 population = NULL;          # bierząca populacja punktów
 currFES = NULL;             # liczba dotychczasowych  ewaluacji funkcji celu, nie może przekroczyć maxFES
-plotData = NULL;            # dane dla wykresu 2D, żeby ich nie obliczać wielokrotnie
+functionPlot = NULL;        # wykres 2D, żeby nie obliczać wielokrotnie

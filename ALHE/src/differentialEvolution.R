@@ -215,10 +215,12 @@ tournament = function(a, b) {
     }
 }
 
-# funkcja obliczająca wartość funkcji celu w punkcie
-value = function(point) {
+# funkcja obliczająca wartość funkcji celu dla wielu punktów na raz
+# argumentem jest macierz, której jeden wiersz odpowiada jednemu punktowi,
+# a kolumny kolejnym współrzędnym punktu
+value = function(points) {
     result = examinedFunction(point);
-    currFES <<- currFES+1;
+    currFES <<- length(points[,1]) + 1;
     return(result);
 }
 

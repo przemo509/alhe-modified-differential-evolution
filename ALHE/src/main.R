@@ -51,7 +51,6 @@ init = function(functionFile) {
     source("utilities/results_building.R");
     source("utilities/verification.R");
     source("utilities/visualisation.R");
-    source("functions/cec2005implementations.R");
     source(functionFile);
     verifyFunctionToLoad();
     initResults(); # musi być po verifyFunctionToLoad()

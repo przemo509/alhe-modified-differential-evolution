@@ -8,12 +8,14 @@ library("cec2005benchmark");
 availableDimensions = c(2, 10, 30, 50); # liczby wymiarów, dla których testujemy każdą z funkcji
 availableFunctions = c(1); # lista funkcji z benchmarku, na których będziemy testować algorytm
 names(availableFunctions) = c(
-                              "F11: Shifted Rotated Weierstrass Function"
+                              "F1: Shifted Sphere Function"
                              ); # nazwy funkcji do wyświetlenia w wynikach
 
 loadFunction = function(functionNumber) {
     functionName <<- names(availableFunctions)[functionNumber];
-    examinedFunction <<- functions(functionNumber);
+    examinedFunction <<- function(point) {
+        return(cec2005benchmark(functionNumber, point));
+    };
     better <<- "min";
     limitLeft <<- -100; if(functionNumber==11) limitLeft <<- -0.5;
     limitRight <<- 100; if(functionNumber==11) limitRight <<- 0.5;

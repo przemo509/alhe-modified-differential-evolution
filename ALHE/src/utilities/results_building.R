@@ -42,11 +42,12 @@ saveResults = function(functionNumber, dimensions, runNo, resultOff, resultOn) {
     dir.create(dirPath, recursive=TRUE, showWarnings=FALSE);
     
     filePath = paste0(dirPath, runNo, ".txt");
-    resultString = paste(resultOff$err3, resultOff$err4, resultOff$err5, resultOff$errTerm, resultOff$fixedAccuracyFES, '\n',
-                         resultOn$err3,  resultOn$err4,  resultOn$err5,  resultOn$errTerm,  resultOn$fixedAccuracyFES);
-    cat(resultString, file=filePath);
+    resultStringRow1 = paste(resultOff$err3, resultOff$err4, resultOff$err5, resultOff$errTerm, resultOff$fixedAccuracyFES);
+    resultStringRow2 = paste(resultOn$err3,  resultOn$err4,  resultOn$err5,  resultOn$errTerm,  resultOn$fixedAccuracyFES);
+    cat(paste0(resultStringRow1, '\n', resultStringRow2), file=filePath);
     
     # i jeszcze info o zapisaniu częściowego wyniku
+    # TODO zapisywać raczej co zrobiono (albo też)
     cat(paste(functionNumber, dimensions, runNo), file=paste0(resultsDir, "completed.txt"),
         append=TRUE, fill=TRUE);
 }
@@ -66,7 +67,7 @@ initResultPart = function() {
 buildResultPartIfNeeded = function(partToUpdate, bestPoint) {
     accuracy = errorValue(bestPoint);
     
-    # rejestrujemy dokładność
+    # rejestrujemy dokładność, w trzech momentach: 1e3, 1e4 i 1e5 FES
     if(currFES == 1e3) {
         partToUpdate$err3 = accuracy;
     } else if(currFES == 1e4) {

@@ -25,6 +25,7 @@ testFunction = function(stretchingOn) {
                  "], Coords [", paste(bestPointSoFar$coords, collapse=", "), "]");
         
         tempP = list(); # populacja przechowująca wyniki pojedynczej iteracji (żeby nie nadpisywać w P)
+        zPointsMatrix = matrix(nrow = populationSize, ncol = dimensions);
         for(i in 1:populationSize) {
             x_i = population[[i]];
             x = sample(population, size = 1)[[1]]$coords;
@@ -39,12 +40,17 @@ testFunction = function(stretchingOn) {
             
             z = list();
             z$coords = crossOver(x_i$coords, yFixed);
-            z$value = value(z$coords);
-            betterPoint = tournament(x_i, z);
+            zPointsMatrix[i,] = z$coords;
+            visualise(x_i$coords, x, x_k, x_l, y, yFixed, z$coords);
+        }
+        # przełamanie pętli
+        pointsValues = value(zPointsMatrix);
+        partialResult = buildResultPartIfNeeded(partialResult, bestPointSoFar);
+        
+        for(i in 1:populationSize) {
+            betterPoint = tournament(population[[i]], list(value = pointsValues[i], coords = zPointsMatrix[i,]));
             tempP[[i]] = betterPoint;
             
-            partialResult = buildResultPartIfNeeded(partialResult, bestPointSoFar);
-            visualise(x_i$coords, x, x_k, x_l, y, yFixed, z$coords, betterPoint$coords);
         }
         population <<- tempP;
         bestPointSoFar = bestFromPopulation();
@@ -65,13 +71,15 @@ testFunction = function(stretchingOn) {
 # funkcja losująca populację startową
 # każda współrzędna ma rozkład jednostajny
 initPopulation = function() {
-    population <<- list();
     
+    pointsMatrix = matrix(runif(dimensions*populationSize, initLimitLeft, initLimitRight),
+                          nrow = populationSize,
+                          ncol = dimensions);
+    pointsValues = value(pointsMatrix);
+    
+    population <<- list();
     for(i in 1:populationSize) {
-        point = list();
-        point$coords = runif(dimensions, initLimitLeft, initLimitRight);
-        point$value = value(point$coords);
-        population <<- c(population, list(point));
+        population <<- c(population, list(list(value = pointsValues[i], coords = pointsMatrix[i,])));
     }
 }
 
@@ -219,8 +227,13 @@ tournament = function(a, b) {
 # argumentem jest macierz, której jeden wiersz odpowiada jednemu punktowi,
 # a kolumny kolejnym współrzędnym punktu
 value = function(points) {
-    result = examinedFunction(point);
-    currFES <<- length(points[,1]) + 1;
+    if(!is.matrix(points)) {
+        msg = "Punkty musza miec postac macierzy!";
+        loggerERROR(msg);
+        stop(paste0(msg, "\n "));
+    }
+    result = examinedFunction(points);
+    currFES <<- currFES + length(points[,1]);
     return(result);
 }
 

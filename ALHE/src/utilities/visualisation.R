@@ -6,11 +6,11 @@
 
 # generujemy dane dla wykresu 2D, żeby nie obliczać tego za każdym razem, kiedy chcemy go rysować
 initVisualisation = function() {
-    if(loggingLevel < LVL_DEBUG) return();
+    if(loggingLevel < LVL_SHOW_POPULATION) return();
     
-    xResolution = 1e3;
-    yResolution = 1e3;
-    zResolution = 1e5; # liczba kolorów
+    xResolution = 1e2;
+    yResolution = 1e2;
+    zResolution = 1e3; # liczba kolorów
     
     xAxis = seq(limitLeft, limitRight, length=xResolution);
     yAxis = seq(limitLeft, limitRight, length=yResolution);
@@ -42,7 +42,7 @@ showPopulation = function() {
         y = c(y, population[[i]]$coords[2]);
     }
     
-    points(x, y, pch=19);
+    points(x, y, pch=4, col="red");
 }
 
 showFunction2D = function() {
@@ -53,7 +53,7 @@ showFunction2D = function() {
 
 # procedura szczegółowo przedstawiająca na wykresie bieżącą sytuację
 # rysuje wszystkie charakterystyczne punkty algorytmu ewolucji różnicowej
-visualise = function(x_i, x, x_k, x_l, y, yFixed, z, betterPoint) {
+visualise = function(x_i, x, x_k, x_l, y, yFixed, z) {
     if(loggingLevel < LVL_DEBUG) return();
     
     showPopulation();
@@ -67,7 +67,6 @@ visualise = function(x_i, x, x_k, x_l, y, yFixed, z, betterPoint) {
     showPoint(y, "orange");
     showPoint(yFixed, "yellow");
     showPoint(z, "purple", 20);
-    showPoint(betterPoint, "cyan", 4);
     
     par(xpd=TRUE); # rysowanie poza wykresem (legenda)
     legend(limitRight-1, limitLeft+1,

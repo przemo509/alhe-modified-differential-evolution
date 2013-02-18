@@ -66,6 +66,6 @@ verifyLoadedFunction = function(functionNumber) {
     if(ok == FALSE) {
         msg = "Blad w definicji funkcji. Popraw ja i uruchom skrypt ponownie.";
         loggerERROR(msg);
-#        stop(paste0(msg, "\n "));
+        stop(paste0(msg, "\n "));
     }
 }

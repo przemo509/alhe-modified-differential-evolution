@@ -10,12 +10,12 @@
 LVL_NO_LOG = 0;             # nie wyświetlane są żadne rysunki, wykresy ani log na konsolę
 LVL_SHOW_POPULATION = 1;    # pokazujemy wykres funkcji i populacje
 LVL_DEBUG = 10;             # pokazujemy wszystkie punkty charakterystyczne
-loggingLevel = LVL_DEBUG;
+loggingLevel = LVL_NO_LOG;
 
 logFile = "../logs/log.txt";
 
 initLogging = function() {
-    options(digits.secs = 3); # TODO zapewnić że się zmieści w 80 znakach + wypisywać log po kilka tys. linii na raz
+    options(digits.secs = 3, width = 2000); # TODO zapewnić że się zmieści w 80 znakach + wypisywać log po kilka tys. linii na raz
     cat("", file=logFile, append=FALSE)
 }
 

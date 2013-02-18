@@ -64,6 +64,7 @@ initFunction = function(functionNumber) {
 # inicjalizacja parametrów funkcji celu zależnych od liczby wymiarów: maxFES i optimum
 initDimsSpecifics = function(functionNumber, dims) {
     dimensions <<- dims;
+    populationSize <<- dimensions*10;
     loadDimsSpecifics(functionNumber, dimensions);
     verifyLoadedFunction(functionNumber);
     initVisualisation();

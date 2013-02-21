@@ -1,0 +1,778 @@
+sample.interval=20000
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value initPopulation testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+crossOver testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+close readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+showPopulation showProgress testFunction runProf 
+match structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+options getOption file cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+> applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+< applyLimitsToPoint testFunction runProf 
+$ find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
++ applyLimitsToPoint testFunction runProf 
+calculateStretching testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+loggerDEBUG showProgress testFunction runProf 
+visualise testFunction runProf 
+find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+crossOver testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+< visualise testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+calculateStretching testFunction runProf 
+sample.int testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+unique simplify2array sapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+match structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+sample.int testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+matrix testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+- maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+testFunction runProf 
+match.fun apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+visualise testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+sample.int testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+testFunction runProf 
+stopAlgorithm testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+< applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+$ find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+ifelse file cat logger loggerINFO stopAlgorithm testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+> applyLimitsToPoint testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+crossOver testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+options getOption file cat logger loggerINFO stopAlgorithm testFunction runProf 
+names structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+visualise testFunction runProf 
+buildResultPartIfNeeded testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+runif crossOver testFunction runProf 
+cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+grepl find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+stopAlgorithm testFunction runProf 
+close readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+calculateStretching testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+rbind do.call find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+showProgress testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+crossOver testFunction runProf 
+grep find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+runif crossOver testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+( applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+crossOver testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+- testFunction runProf 
+crossOver testFunction runProf 
+vapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+sample.int testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+aperm.default aperm apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
++ applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+close readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+match.fun vapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+$ find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+substring cat logger loggerINFO stopAlgorithm testFunction runProf 
+* testFunction runProf 
+testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+match structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+$ find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+calculateStretching testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+as.POSIXlt.POSIXct as.POSIXlt format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+runif crossOver testFunction runProf 
+<= applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+> crossOver testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+unlist format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+aperm apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+$ as.POSIXlt.POSIXct as.POSIXlt format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+value testFunction runProf 
+cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+/ applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+$ as.POSIXlt.POSIXct as.POSIXlt format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+visualise testFunction runProf 
+close readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+do.call find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+stopAlgorithm testFunction runProf 
+visualise testFunction runProf 
+visualise testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+> applyLimitsToPoint testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+/ applyLimitsToPoint testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+runif crossOver testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+paste0 format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+visualise testFunction runProf 
+- testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+match %in% structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+runif crossOver testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+paste0 format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+calculateStretching testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+/ calculateStretching testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+visualise testFunction runProf 
+close cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+visualise testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+$ find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+- maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+sample.int testFunction runProf 
+sample.int testFunction runProf 
+sample.int testFunction runProf 
+sample.int testFunction runProf 
+sample.int testFunction runProf 
+sample.int testFunction runProf 
++ applyLimitsToPoint testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+calculateStretching testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+> applyLimitsToPoint testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+.libPaths find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+names as.POSIXlt.POSIXct as.POSIXlt format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+aperm apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+visualise testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+== calculateStretching testFunction runProf 
+calculateStretching testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+structure .POSIXct Sys.time format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+unique.default unique find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+crossOver testFunction runProf 
+structure .POSIXct Sys.time format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+as.POSIXlt.POSIXct as.POSIXlt format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+runif crossOver testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+unlist apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+runif crossOver testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+unique simplify2array sapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+runif crossOver testFunction runProf 
+crossOver testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+calculateStretching testFunction runProf 
+close.connection close readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+unique find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file.path file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+sample.int testFunction runProf 
+* testFunction runProf 
+sample.int testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+aperm.default aperm apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+unique simplify2array sapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+crossOver testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.path file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+testFunction runProf 
+$ as.POSIXlt.POSIXct as.POSIXlt format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+FUN lapply sapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+visualise testFunction runProf 
+crossOver testFunction runProf 
+sample.int testFunction runProf 
+testFunction runProf 
++ applyLimitsToPoint testFunction runProf 
+sapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+match structure .POSIXct Sys.time format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+close.connection close readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+substring cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
++ applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+testFunction runProf 
+calculateStretching testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+$ find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+crossOver testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+match %in% structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+$ find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+match %in% structure .POSIXct file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+rbind do.call find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+crossOver testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+crossOver testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+grep find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+unique simplify2array sapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+sample.int testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.path FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+aperm apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.exists system.file cec2005benchmark examinedFunction value testFunction runProf 
+ifelse file cat logger loggerINFO stopAlgorithm testFunction runProf 
+format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+rbind do.call find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+close.connection close readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
++ applyLimitsToPoint testFunction runProf 
+crossOver testFunction runProf 
+maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+< visualise testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+calculateStretching testFunction runProf 
+vapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+aperm apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+paste0 list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+crossOver testFunction runProf 
+testFunction runProf 
+gzfile readRDS FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.path system.file cec2005benchmark examinedFunction value testFunction runProf 
+paste0 format.POSIXlt structure format.POSIXct format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+list.files find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+.C cec2005benchmark examinedFunction value testFunction runProf 
+file cat logger loggerINFO stopAlgorithm testFunction runProf 
+Sys.time format as.character.Date cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close cat logger loggerINFO stopAlgorithm testFunction runProf 
+FUN lapply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+sample.int testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+applyLimitsToPoint testFunction runProf 
+visualise testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+apply find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+close.connection close cat logger loggerINFO stopAlgorithm testFunction runProf 
+cat logger loggerINFO stopAlgorithm testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+file.info find.package system.file cec2005benchmark examinedFunction value testFunction runProf 
+max maxDistanceToLimit applyLimitsToPoint testFunction runProf 
+file.exists find.package system.file cec2005benchmark examinedFunction value testFunction runProf 

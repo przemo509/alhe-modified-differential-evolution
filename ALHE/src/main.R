@@ -75,3 +75,24 @@ initDimsSpecifics = function(functionNumber, dims) {
     initVisualisation();
     showFunction2D();
 }
+
+# test wydajnościowy, powstanie plik z informacją o tym ile czasu wykonują się poszczególne funckje
+runProf = function() {
+    
+    rm(list = ls(all = TRUE));
+    init("functions/cec2005problems.R");
+    loggingLevel <<- LVL_NO_LOG;
+    loggerCONSOLE("\n=====  START PROF  =====\n");
+    profilerDataFile = paste0(logPath, "/profilerData.txt");
+    Rprof(profilerDataFile);
+    
+    initFunction(1);
+    initDimsSpecifics(1, 2);
+    testFunction(stretchingOn=FALSE);
+    testFunction(stretchingOn=TRUE);
+    
+    Rprof(NULL); # wyłączenie profilowania
+    
+    loggerCONSOLE("\n=====  END PROF  =====\n");
+    summaryRprof(profilerDataFile);
+}

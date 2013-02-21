@@ -13,7 +13,8 @@ LVL_SHOW_POPULATION = 2;    # pokazujemy ponadto wykres funkcji i populacje
 LVL_DEBUG = 10;             # pokazujemy dodatkowo wszystkie punkty charakterystyczne dla algorytmu ewolucyjnego
 loggingLevel = LVL_NO_LOG;
 
-logFile = "../logs/log.txt";
+logPath = "../logs";
+logFile = paste0(logPath, "/log.txt");
 
 initLogging = function() {
     options(digits.secs = 3, width = 2000); # TODO wypisywać log po kilka tys. linii na raz jeśli profiler znajdzie tu wąskie gardło

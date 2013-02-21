@@ -16,15 +16,14 @@ testFunction = function(stretchingOn) {
     partialResult = initResultPart();
     
     iteration = 1;
-    while(!stopAlgorithm(bestPointSoFar, iteration)) {
+    while(!stopAlgorithm(P_values[bestPointSoFar], iteration)) {
         showProgress(iteration, bestPointSoFar);
         
-        tempP = list(); # populacja przechowująca wyniki pojedynczej iteracji (żeby nie nadpisywać w P)
-        z = matrix(nrow = populationSize, ncol = dimensions);
-        for(i in 1:populationSize) {
-            x = sample.int(populationSize, size = 1);
-            x_k = sample.int(populationSize, size = 1);
-            x_l = sample.int(populationSize, size = 1);
+        zMatrix = matrix(nrow = P_size, ncol = dimensions);
+        for(i in 1:P_size) {
+            x = sample.int(P_size, size = 1);
+            x_k = sample.int(P_size, size = 1);
+            x_l = sample.int(P_size, size = 1);
             
             v_Raw = P[x_k,] - P[x_l,];
             paramA = calculateStretching(v_Raw, stretchingOn);
@@ -32,24 +31,20 @@ testFunction = function(stretchingOn) {
             y = P[x,] + v;
             yFixed = applyLimitsToPoint(P[x,], y);
             
-            z[i,] = crossOver(P[i,], yFixed);
-            visualise(i, x, x_k, x_l, y, yFixed, z[i,]);
+            zMatrix[i,] = crossOver(P[i,], yFixed);
+            visualise(i, x, x_k, x_l, y, yFixed, zMatrix[i,]);
         }
-        # przełamanie pętli
-        zValues = value(z);
-        partialResult = buildResultPartIfNeeded(partialResult, P_values[bestPointSoFar]); # najlepiej od razu po value()
+        zValues = value(zMatrix);
+        
+        # najlepiej zapisywać wynik od razu po value(), żeby być jak najbliżej currFes
+        partialResult = buildResultPartIfNeeded(partialResult, P_values[bestPointSoFar]);
         
         if(better == "max") {
-            P[] = return(which.max(P_values));
+            P[zValues>P_values,] = zMatrix[zValues>P_values,];
         } else {
-            return(which.min(P_values));
+            P[zValues < P_values,] = zMatrix[zValues < P_values,];
         }
-        for(i in 1:populationSize) {
-            betterPoint = tournament(population[[i]], list(value = pointsValues[i], coords = zPointsMatrix[i,]));
-            tempP[[i]] = betterPoint;
-            
-        }
-        population <<- tempP;
+        
         bestPointSoFar = bestFromPopulation();
         iteration = iteration+1;
     }
@@ -170,15 +165,6 @@ crossOver = function(a, b) {
     result = a;
     result[probs>paramCR] = b[probs>paramCR];   # z punktu b brane są współrzędne z prawdopodobieństwem (1-CR)
     return(result);
-}
-
-# funkcja zwracająca lepszy z dwóch punktów
-tournament = function(a, b) {
-    if((better == "max" && a$value > b$value) || (better == "min" && a$value < b$value)) {
-        return(a);
-    } else {
-        return(b);
-    }
 }
 
 # funkcja obliczająca wartość funkcji celu dla wielu punktów na raz

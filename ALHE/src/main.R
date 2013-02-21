@@ -19,19 +19,24 @@ run = function() {
         for(dims in availableDimensions) {
             initDimsSpecifics(functionNumber, dims);
             for(runNo in 1:howManyRuns) {
-                currRun = currRun + 1;
-                loggerCONSOLE("Postep: ", 100 * currRun / allRuns, " %                             \r");
-                if(alreadyTested(functionNumber, dims, runNo)) next;
+                if(alreadyTested(functionNumber, dims, runNo)){
+                    next;
+                }
                 
                 oldSeed = .Random.seed;
+                loggerINFO("=====================================================================");
                 loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dims, ", przebieg: ", runNo, ", OFF");
+                loggerINFO("=====================================================================");
                 resultOff = testFunction(stretchingOn=FALSE);
                 
-                
                 .Random.seed <<- oldSeed;
+                loggerINFO("=====================================================================");
                 loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dims, ", przebieg: ", runNo, ", ON");
+                loggerINFO("=====================================================================");
                 resultOn = testFunction(stretchingOn=TRUE);
                 
+                currRun = currRun + 1;
+                loggerCONSOLE("Postep: ", 100 * currRun / allRuns, " %                             \r");
                 saveResults(functionNumber, dims, runNo, resultOff, resultOn);
             }
         }
@@ -64,10 +69,9 @@ initFunction = function(functionNumber) {
 # inicjalizacja parametrów funkcji celu zależnych od liczby wymiarów: maxFES i optimum
 initDimsSpecifics = function(functionNumber, dims) {
     dimensions <<- dims;
-    populationSize <<- dimensions*10;
+    P_size <<- dimensions*10;
     loadDimsSpecifics(functionNumber, dimensions);
     verifyLoadedFunction(functionNumber);
     initVisualisation();
     showFunction2D();
-    i=1;
 }

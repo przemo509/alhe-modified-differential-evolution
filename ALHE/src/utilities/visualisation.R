@@ -6,7 +6,9 @@
 
 # generujemy dane dla wykresu 2D, żeby nie obliczać tego za każdym razem, kiedy chcemy go rysować
 initVisualisation = function() {
-    if(loggingLevel < LVL_SHOW_POPULATION) return();
+    if(loggingLevel < LVL_SHOW_POPULATION) {
+        return();
+    }
     
     xResolution = 1e2;
     yResolution = 1e2;
@@ -30,25 +32,23 @@ initVisualisation = function() {
 }
 
 # procedura rysująca punkty na wykresie
+# dla większej ilości wymiarów, brane są i tak tylko dwa pierwsze
+# dzięki temu możemy "obejrzeć" wyniki również dla większej liczby wymiarów
 showPopulation = function() {
-    if(loggingLevel < LVL_SHOW_POPULATION) return();
-    
-    showFunction2D();
-    
-    x = list();
-    y = list();
-    for(i in 1:populationSize) {
-        x = c(x, population[[i]]$coords[1]);
-        y = c(y, population[[i]]$coords[2]);
+    if(loggingLevel < LVL_SHOW_POPULATION) {
+        return();
     }
     
-    points(x, y, pch=4, col="red");
+    showFunction2D();
+    points(P[,1], P[,2], pch=4, col="red");
 }
 
 showFunction2D = function() {
-    if(loggingLevel < LVL_SHOW_POPULATION) return();
+    if(loggingLevel < LVL_SHOW_POPULATION) {
+        return();
+    }
     
-    replayPlot(functionPlot);
+    replayPlot(functionPlot); # odtwarzamy zapisany wcześniej wykres
 }
 
 # procedura szczegółowo przedstawiająca na wykresie bieżącą sytuację
@@ -58,20 +58,20 @@ visualise = function(x_i, x, x_k, x_l, y, yFixed, z) {
     
     showPopulation();
     
-    showPoint(x_i, "red", 15);
-    showPoint(x_k, "green", 15);
-    showPoint(x_l, "green", 15);
-    showLine(x_l, x_k, "green");
-    showPoint(x, "blue");
-    showLine(x, y, "red");
+    showPoint(P[x_i,], "red", 15);
+    showPoint(P[x_k,], "green", 15);
+    showPoint(P[x_l,], "green", 15);
+    showLine(P[x_l,], P[x_k,], "green");
+    showPoint(P[x,], "blue");
+    showLine(P[x,], y, "red");
     showPoint(y, "orange");
     showPoint(yFixed, "yellow");
     showPoint(z, "purple", 20);
     
     par(xpd=TRUE); # rysowanie poza wykresem (legenda)
     legend(limitRight-1, limitLeft+1,
-            c("xi", "x", "xk, xl", "y", "z", "better"),
-            fill=c("red", "blue", "green", "orange", "purple", "cyan"));
+           c("xi", "x", "xk, xl", "y", "z", "better"),
+           fill=c("red", "blue", "green", "orange", "purple", "cyan"));
 }
 
 # procedura wyświetlająca punkt na wykresie

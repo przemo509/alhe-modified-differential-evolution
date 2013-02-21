@@ -2,7 +2,7 @@
 # 
 # Author: psadlo
 ###############################################################################
-
+# TODO komentarze do zmian macierzowych, czyli że wszędzie używamy indeksu itp
 
 
 ###############################################################################
@@ -17,36 +17,33 @@ testFunction = function(stretchingOn) {
     
     iteration = 1;
     while(!stopAlgorithm(bestPointSoFar, iteration)) {
-        showPopulation();
-        loggerDEBUG("It. [", iteration,
-                 "], Best [", bestPointSoFar$value,
-                 "], Err [", errorValue(bestPointSoFar),
-                 "], Spread [", maxSpread(),
-                 "], Coords [", paste(bestPointSoFar$coords, collapse=", "), "]");
+        showProgress(iteration, bestPointSoFar);
         
         tempP = list(); # populacja przechowująca wyniki pojedynczej iteracji (żeby nie nadpisywać w P)
-        zPointsMatrix = matrix(nrow = populationSize, ncol = dimensions);
+        z = matrix(nrow = populationSize, ncol = dimensions);
         for(i in 1:populationSize) {
-            x_i = population[[i]];
-            x = sample(population, size = 1)[[1]]$coords;
-            x_k = sample(population, size = 1)[[1]]$coords;
-            x_l = sample(population, size = 1)[[1]]$coords;
+            x = sample.int(populationSize, size = 1);
+            x_k = sample.int(populationSize, size = 1);
+            x_l = sample.int(populationSize, size = 1);
             
-            v_Raw = x_k - x_l;
+            v_Raw = P[x_k,] - P[x_l,];
             paramA = calculateStretching(v_Raw, stretchingOn);
             v = paramF * paramA * v_Raw;
-            y = x + v;
-            yFixed = applyLimitsToPoint(x, y);
+            y = P[x,] + v;
+            yFixed = applyLimitsToPoint(P[x,], y);
             
-            z = list();
-            z$coords = crossOver(x_i$coords, yFixed);
-            zPointsMatrix[i,] = z$coords;
-            visualise(x_i$coords, x, x_k, x_l, y, yFixed, z$coords);
+            z[i,] = crossOver(P[i,], yFixed);
+            visualise(i, x, x_k, x_l, y, yFixed, z[i,]);
         }
         # przełamanie pętli
-        pointsValues = value(zPointsMatrix);
-        partialResult = buildResultPartIfNeeded(partialResult, bestPointSoFar);
+        zValues = value(z);
+        partialResult = buildResultPartIfNeeded(partialResult, P_values[bestPointSoFar]); # najlepiej od razu po value()
         
+        if(better == "max") {
+            P[] = return(which.max(P_values));
+        } else {
+            return(which.min(P_values));
+        }
         for(i in 1:populationSize) {
             betterPoint = tournament(population[[i]], list(value = pointsValues[i], coords = zPointsMatrix[i,]));
             tempP[[i]] = betterPoint;
@@ -57,13 +54,8 @@ testFunction = function(stretchingOn) {
         iteration = iteration+1;
     }
     
-    showPopulation();
-    loggerDEBUG("It. [", iteration,
-            "], Best [", bestPointSoFar$value,
-            "], Err [", errorValue(bestPointSoFar),
-            "], Spread [", maxSpread(),
-            "], Coords [", paste(bestPointSoFar$coords, collapse=", "), "]");
-    partialResult = finishResultPart(partialResult, bestPointSoFar);
+    showProgress(iteration, bestPointSoFar);
+    partialResult = finishResultPart(partialResult, P_values[bestPointSoFar]);
     return(partialResult);
 }
 
@@ -71,38 +63,34 @@ testFunction = function(stretchingOn) {
 # funkcja losująca populację startową
 # każda współrzędna ma rozkład jednostajny
 initPopulation = function() {
-    
-    pointsMatrix = matrix(runif(dimensions*populationSize, initLimitLeft, initLimitRight),
-                          nrow = populationSize,
-                          ncol = dimensions);
-    pointsValues = value(pointsMatrix);
-    
-    population <<- list();
-    for(i in 1:populationSize) {
-        population <<- c(population, list(list(value = pointsValues[i], coords = pointsMatrix[i,])));
-    }
+    P <<- matrix(
+            runif(dimensions*P_size, initLimitLeft, initLimitRight),
+            nrow = P_size,
+            ncol = dimensions
+    );
+    P_values <<- value(P);
 }
 
-# funkcja zwracająca punkt z populacji mający najlepszą wartość
+# funkcja zwracająca indeks najlepszego punktu w populacji
 bestFromPopulation = function() {
-    best = population[[1]];
-    for(i in 1:populationSize) {
-        best = tournament(best, population[[i]]);
+    if(better == "max") {
+        return(which.max(P_values));
+    } else {
+        return(which.min(P_values));
     }
-    return(best);
 }
 
 # funkcja określająca warunek stopu
-stopAlgorithm = function(best, iteration) {
-    # podczas debugowania zbyt długo trwa rysowanie wszystkich punktów na wykresie
-#    if(loggingLevel == LVL_DEBUG && iteration > 100) return(TRUE);
+stopAlgorithm = function(bestValue, iteration) {
     # warunek na liczbę ewaluacji funkcji celu
-    loggerINFO("D=[", dimensions, "], I=[", iteration, "], FES=[", currFES, "], BEST=[",best$value, "]");
-    if(currFES > maxFES) return(TRUE);
+    loggerINFO("D=[", dimensions, "], I=[", iteration, "], FES=[", currFES, "], BEST=[", bestValue, "]"); # TODO jakie info jest przydatne? i kiedy je wypisywać?
+    if(currFES > maxFES) {
+        return(TRUE);        
+    }
     
     if(!is.null(optimumValue)) {
         # warunek na jakość najlepszego punktu
-        accuracy = errorValue(best);
+        accuracy = abs(bestValue - optimumValue)
         if(accuracy < terErr) {
             return(TRUE);
         } else {
@@ -112,33 +100,18 @@ stopAlgorithm = function(best, iteration) {
         # jeśli nie znamy najlepszego punktu (np. chcemy go dopiero wyznaczyć)
         # to można rozpatrywać skupienie populacji
         if(maxSpread() < 0.001) {
-            return(TRUE); # punkty są skupione wokół jednego optimum
+            return(TRUE); # punkty są skupione wokół jednego optimum (byćmoże lokalnego, ale trudno)
         } else {
-            return(FALSE);
+            return(FALSE);range
         }
     }
 }
 
-# funkcja wyznaczająca maksymalną rozpiętość wartości współrzędnej w jednym wymiarze
+# funkcja wyznaczająca maksymalną rozpiętość wartości współrzędnej w jednym wymiarze (czyli w kostce, nie w kuli)
 maxSpread = function() {
-    spread = 0;
-    
-    for(i in 1:dimensions) {
-        minCoord = maxCoord = population[[1]]$coords[i];
-        for(j in 1:populationSize) {
-            if(population[[j]]$coords[i] < minCoord) {
-                minCoord = population[[j]]$coords[i];
-            }
-            if(population[[j]]$coords[i] > maxCoord) {
-                maxCoord = population[[j]]$coords[i];
-            }
-        }
-        if(maxCoord-minCoord > spread) {
-            spread = maxCoord - minCoord;
-        }
-    }
-    
-    return(spread);
+    rangesByDimensions = apply(populationCoords, 2, range);                 # min i max
+    spreadByDimensions = rangesByDimensions[2,] - rangesByDimensions[1,];   # max - min
+    return(max(spreadByDimensions));
 }
 
 # funkcja obliczająca współczynnik skalujący "a"
@@ -148,18 +121,15 @@ calculateStretching = function(vec, stretchingOn) {
     }
     
     d = abs(vec);
-    sumOfSquares = 0;
-    for(i in 1:dimensions) {
-        sumOfSquares = sumOfSquares + vec[i]*vec[i];
-    }
-    mod_d = sqrt(sumOfSquares); # moduł wektora
-    d_norm = d / mod_d; # wektor znormalizowany
+    sumOfSquares = sum(vec*vec);
+    mod_d = sqrt(sumOfSquares);     # moduł wektora
+    d_norm = d / mod_d;             # wektor znormalizowany
     maxCoord = max(d_norm);
     a = 1 / maxCoord;
     return(a);
 }
 
-# funkcja rzutująca punkt na krawędź przestrzeni przeszukiwań metodą bisekcji
+# funkcja rzutująca punkt b na krawędź przestrzeni przeszukiwań metodą bisekcji wzdłuż kiernuku [a,b]
 applyLimitsToPoint = function(a, b) {
     startPoint = a;
     endPoint = b;
@@ -188,29 +158,17 @@ applyLimitsToPoint = function(a, b) {
 # funkcja obliczająca dla punktu największe wysunięcie poza przestrzeń
 # ujemne oznacza położenie w granicach przestrzeni
 maxDistanceToLimit = function(point) {
-    maxDistance = -Inf;
-    for(i in 1:dimensions) {
-        coord = point[i];
-        
-        distanceRight = coord - limitRight;
-        distanceLeft = limitLeft - coord;
-        maxDistance = max(c(maxDistance, distanceLeft, distanceRight));
-    }
-    return(maxDistance);
+    distancesRight = point - limitRight;                    # wysunięcia poza prawe krawędzi kostki
+    distancesLeft = limitLeft - point;                      # i poza lewe (też mają być dodatnie poza kostką, stąd zmiana znaku)
+    return(max(max(distancesRight), max(distancesLeft)));   # zwracamy największe wysunięcie
 }
 
 # funkcja krzyżująca dwa punkty
 # przepisuje z p-stwem CR współrzędną z pierwszego z nich
 crossOver = function(a, b) {
     probs = runif(dimensions);
-    result = c();
-    for(i in 1:dimensions) {
-        if(probs[i] <= paramCR) {
-            result = c(result, a[i]);
-        } else {
-            result = c(result, b[i]);
-        }
-    }
+    result = a;
+    result[probs>paramCR] = b[probs>paramCR];   # z punktu b brane są współrzędne z prawdopodobieństwem (1-CR)
     return(result);
 }
 
@@ -236,9 +194,3 @@ value = function(points) {
     currFES <<- currFES + length(points[,1]);
     return(result);
 }
-
-# funkcja zwracająca bieżący błąd, czyli różnicę wartości między opotimum a bieżącym najleszym punktem
-errorValue = function(point) {
-    return(abs(point$value - optimumValue));
-}
-

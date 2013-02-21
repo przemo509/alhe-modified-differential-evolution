@@ -12,14 +12,14 @@
 ###############################################################################
 # parametry benchmarku CEC2005
 ###############################################################################
-howManyRuns = 25;           # ile razy uruchomić każdą konfigurację, żeby wyciągnąć średni wynik
+howManyRuns = 1;           # ile razy uruchomić każdą konfigurację, żeby wyciągnąć średni wynik
 
 ###############################################################################
 # parametry algorytmu ewolucyjnego
 ###############################################################################
 
 # rozmiar populacji - liczba punktów
-populationSize = 50;
+P_size = 50;
 
 # stała skalująca wektor różnicowy v
 paramF = 0.9;
@@ -48,14 +48,15 @@ terErr = NULL;              # dopuszczalna różnica między wartością rozwią
 maxFES = NULL;              # maksymalna liczba ewaluacji funkcji celu, warunek definitywnie kończący jego pracę
 optimum=NULL;               # punkt przestrzeni, dla którego funkcja osiąga optimum
 optimumValue=NULL;          # wartość funkcji w swoim optimum
-fixedAccuracy=NULL;         # wymagana przez benchmark dokładność (trzeba dla niej zmierzyć FES)
+fixedAccuracy=NULL;         # wymagana przez benchmark dokładność, różna dla różnych funkcji (trzeba dla niej zmierzyć FES)
 # jeśli nie nadpiszemy 'optimum' i 'optimumValue' algorytm będzie próbowal je
 # wyznaczyć, a jako dodatkowy warunek stopu posłuży wówczas maxSpread()
 
 ###############################################################################
 # zmienne wewnętrzne algorytmu, wykorzystywane w wielu miejscach
 ###############################################################################
-dimensions = NULL;          # bierząca liczba wymiarów, po kolei z 'availableDimensions'
-population = NULL;          # bierząca populacja punktów
+dimensions = NULL;          # bieżąca liczba wymiarów, po kolei z 'availableDimensions'
+P = NULL;                   # bieżąca populacja punktów (macierz, wiersz odpowiada punktowi, kolumna współrzędnej)
+P_values = NULL;	        # wartości funkcji celu dla bieżącej populacji punktów
 currFES = NULL;             # liczba dotychczasowych  ewaluacji funkcji celu, nie może przekroczyć maxFES
 functionPlot = NULL;        # wykres 2D, żeby nie obliczać wielokrotnie

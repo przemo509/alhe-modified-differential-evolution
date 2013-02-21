@@ -5,7 +5,8 @@
 
 library("cec2005benchmark");
 
-availableDimensions = c(2, 10, 30, 50); # liczby wymiarów, dla których testujemy każdą z funkcji
+# TODO dorobić resztę funkcji (+ limits)
+availableDimensions = c(50); # liczby wymiarów, dla których testujemy każdą z funkcji
 availableFunctions = c(1); # lista funkcji z benchmarku, na których będziemy testować algorytm
 names(availableFunctions) = c(
                               "F1: Shifted Sphere Function"
@@ -13,8 +14,8 @@ names(availableFunctions) = c(
 
 loadFunction = function(functionNumber) {
     functionName <<- names(availableFunctions)[functionNumber];
-    examinedFunction <<- function(point) {
-        return(cec2005benchmark(functionNumber, point));
+    examinedFunction <<- function(points) {
+        return(cec2005benchmark(functionNumber, points));
     };
     better <<- "min";
     limitLeft <<- -100; if(functionNumber==11) limitLeft <<- -0.5;
@@ -43,10 +44,10 @@ optimumPointsData = c(
         "",
         "",
         "weierstrass_data.txt"
-        );
+);
         
 fixedAccuracyData = c(
-        1e-6, 1e-6, 1e-6, 1e-6, 1e-6, # f1-f5
-        1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, # f6-f16
-        1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-1 # f17-f25 
-        );
+        1e-6, 1e-6, 1e-6, 1e-6, 1e-6,                                       # f1-f5
+        1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1e-2,   # f6-f16
+        1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-1                # f17-f25 
+);

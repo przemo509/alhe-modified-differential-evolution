@@ -2,6 +2,7 @@
 # 
 # Author: psadlo
 ###############################################################################
+# TODO zapisywać też współrzędne punktu, przynajmniej pierwsze dwie, żeby na wykresach znaleźć, ale mogą być wszystkie
 
 resultsDir = "../results/"; 
 resultsFile = paste0(resultsDir, "completed.txt");
@@ -64,8 +65,8 @@ initResultPart = function() {
     return(part);
 }
 
-buildResultPartIfNeeded = function(partToUpdate, bestPoint) {
-    accuracy = errorValue(bestPoint);
+buildResultPartIfNeeded = function(partToUpdate, bestPointValue) {
+    accuracy = abs(bestPointValue - optimumValue);
     
     # rejestrujemy dokładność, w trzech momentach: 1e3, 1e4 i 1e5 FES
     if(currFES == 1e3) {
@@ -84,9 +85,8 @@ buildResultPartIfNeeded = function(partToUpdate, bestPoint) {
     return(partToUpdate);
 }
 
-finishResultPart = function(partToUpdate, bestPoint) {
-    partToUpdate$errTerm = errorValue(bestPoint);
-    
+finishResultPart = function(partToUpdate, bestPointValue) {
+    partToUpdate$errTerm = abs(bestPointValue - optimumValue);
     return(partToUpdate);    
 }
 

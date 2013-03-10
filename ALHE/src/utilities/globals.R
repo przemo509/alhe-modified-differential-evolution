@@ -12,7 +12,7 @@
 ###############################################################################
 # parametry benchmarku CEC2005
 ###############################################################################
-howManyRuns = 1;           # ile razy uruchomić każdą konfigurację, żeby wyciągnąć średni wynik
+howManyRuns = 25; # ile razy uruchomić każdą konfigurację, żeby wyciągnąć średni wynik
 
 ###############################################################################
 # parametry algorytmu ewolucyjnego
@@ -38,17 +38,17 @@ availableFunctions = NULL;  # lista funkcji, na których będziemy testować alg
 availableDimensions = NULL; # liczby wymiarów, dla których testujemy każdą z funkcji
 
 functionName = NULL;        # nazwa funkcji, wypisujemy ją dla celów identyfikacji
-examinedFunction=NULL;      # definicja funkcji poddawanej optymalizacji
-better=NULL;                # minimalizacja czy maksymalizacja funkcji ("min", "max")
-limitLeft=NULL;             # granice przestrzeni poszukiwań (dla każdego wymiaru te same)
-limitRight=NULL;            # j.w.
-initLimitLeft=NULL;         # fragment przestrzeni, wewnątrz którego generujemy populację startową
-initLimitRight=NULL;        # j.w.
+examinedFunction = NULL;    # definicja funkcji poddawanej optymalizacji
+better = NULL;              # minimalizacja czy maksymalizacja funkcji ("min", "max")
+limitLeft = NULL;           # granice przestrzeni poszukiwań (dla każdego wymiaru te same)
+limitRight = NULL;          # j.w.
+initLimitLeft = NULL;       # fragment przestrzeni, wewnątrz którego generujemy populację startową
+initLimitRight = NULL;      # j.w.
 terErr = NULL;              # dopuszczalna różnica między wartością rozwiązania znalezionego przez algorytm a rzeczywistym optimum
 maxFES = NULL;              # maksymalna liczba ewaluacji funkcji celu, warunek definitywnie kończący jego pracę
-optimum=NULL;               # punkt przestrzeni, dla którego funkcja osiąga optimum
-optimumValue=NULL;          # wartość funkcji w swoim optimum
-fixedAccuracy=NULL;         # wymagana przez benchmark dokładność, różna dla różnych funkcji (trzeba dla niej zmierzyć FES)
+optimum = NULL;             # punkt przestrzeni, dla którego funkcja osiąga optimum
+optimumValue = NULL;        # wartość funkcji w swoim optimum
+fixedAccuracy = NULL;       # wymagana przez benchmark dokładność, różna dla różnych funkcji (trzeba dla niej zmierzyć FES)
 # jeśli nie nadpiszemy 'optimum' i 'optimumValue' algorytm będzie próbowal je
 # wyznaczyć, a jako dodatkowy warunek stopu posłuży wówczas maxSpread()
 

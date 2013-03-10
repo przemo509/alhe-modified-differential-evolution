@@ -20,14 +20,14 @@ testCecCalls = function(){
     zLen= 100000; # liczba kolorów
     lim = 100;
     xyLen = xLen * yLen;
-    x = seq(-lim, lim, length=xLen);
-    y = seq(-lim, lim, length=yLen);
+    x = seq(-lim, lim, length = xLen);
+    y = seq(-lim, lim, length = yLen);
     loggerINFO("Sekwencje utworzone");
     
     ########################################################################
     # nie testować sposobu 1 dla przypadku 1000x1000 bo się można nie doczekać
 #    loggerINFO("Sposob 1 - cec w petli");
-#    z1 = matrix(ncol=xLen, nrow=yLen);
+#    z1 = matrix(ncol = xLen, nrow = yLen);
 #    loggerINFO("1. Macierz utworzona - pusta");
 #    for(i in 1:xLen) {
 #        for(j in 1:yLen) {
@@ -35,16 +35,16 @@ testCecCalls = function(){
 #        }
 #    }
 #    loggerINFO("1. Wynik funkcji otrzymany, od razu macierz");
-#    image(x, y, z1, col=gray.colors(zLen, start = 0, end = 1), useRaster=TRUE);
+#    image(x, y, z1, col = gray.colors(zLen, start = 0, end = 1), useRaster = TRUE);
 #    loggerINFO("1. Wykres narysowany");
-#    contour(x, y, z1, nlevels = 20, add=TRUE);
+#    contour(x, y, z1, nlevels = 20, add = TRUE);
 #    loggerINFO("1. Kontury narysowane");
 #    loggerINFO("Koniec sposobu 1");
     ########################################################################
     
     ########################################################################
     loggerINFO("Sposob 2 - macierz w petli");
-    z2 = matrix(ncol=2, nrow=xyLen);
+    z2 = matrix(ncol = 2, nrow = xyLen);
     for(i in 1:xyLen) {
         xi = (i-1)%%xLen+1;
         yj = (i-1)%/%xLen + 1;
@@ -55,26 +55,26 @@ testCecCalls = function(){
     loggerINFO("2. Wynik funkcji otrzymany");
     resM2 = matrix(res2, ncol = xLen);
     loggerINFO("2. Wynik funkcji przeksztalcony na macierz");
-    image(x, y, resM2, col=gray.colors(zLen, start = 0, end = 1), useRaster=TRUE);
+    image(x, y, resM2, col = gray.colors(zLen, start = 0, end = 1), useRaster = TRUE);
     loggerINFO("2. Wykres narysowany");
-    contour(x, y, resM2, nlevels = 20, add=TRUE);
+    contour(x, y, resM2, nlevels = 20, add = TRUE);
     loggerINFO("2. Kontury narysowane");
     loggerINFO("Koniec sposobu 2");
     ########################################################################
     
     ########################################################################
     loggerINFO("Sposob 3 - brak petli");
-    xx=rep(x, times=yLen);
-    yy=rep(y, each=xLen);
-    z3=cbind(xx, yy);
+    xx = rep(x, times = yLen);
+    yy = rep(y, each = xLen);
+    z3 = cbind(xx, yy);
     loggerINFO("3. Macierz wypelniona rep() + cbind()");
     res3 = cecValue(z3);
     loggerINFO("3. Wynik funkcji otrzymany");
     resM3 = matrix(res3, ncol = xLen);
     loggerINFO("3. Wynik funkcji przeksztalcony na macierz");
-    image(x, y, resM3, col=gray.colors(zLen, start = 0, end = 1), useRaster=TRUE);
+    image(x, y, resM3, col = gray.colors(zLen, start = 0, end = 1), useRaster = TRUE);
     loggerINFO("3. Wykres narysowany");
-    contour(x, y, resM3, nlevels = 20, add=TRUE);
+    contour(x, y, resM3, nlevels = 20, add = TRUE);
     loggerINFO("3. Kontury narysowane");
     loggerINFO("Koniec sposobu 3");
     ########################################################################

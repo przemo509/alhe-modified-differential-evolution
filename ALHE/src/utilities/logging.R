@@ -18,18 +18,18 @@ logFile = paste0(logPath, "/log.txt");
 
 initLogging = function() {
     options(digits.secs = 3, width = 2000); # TODO wypisywać log po kilka tys. linii na raz jeśli profiler znajdzie tu wąskie gardło
-    cat("", file=logFile, append=FALSE); # usunięcie poprzedniej zawartości
+    cat("", file = logFile, append = FALSE); # usunięcie poprzedniej zawartości
 }
 
 # procedura wołana przez inne, specjalizowane procedury logujące
-logger = function(level, ..., logDestination=logFile) {
+logger = function(level, ..., logDestination = logFile) {
     cat(as.character.Date(Sys.time()), ' ', level, ' ', ...,
-        sep="", fill=TRUE, file=logDestination, append=TRUE);
+        sep = "", fill = TRUE, file = logDestination, append = TRUE);
 }
 
 # przepisuje żywcem, bez \n na końcu itp.
 loggerCONSOLE = function(...) {
-    cat(..., sep="");
+    cat(..., sep = "");
     flush.console();
 }
 
@@ -46,12 +46,12 @@ loggerDEBUG = function(...) {
 
 loggerWARN = function(...) {
     logger("[WARN ]", ...);
-    logger("[WARN ]", ..., logDestination=""); # na konsolę też
+    logger("[WARN ]", ..., logDestination = ""); # na konsolę też
 }
 
 loggerERROR = function(...) {
     logger("[ERROR]", ...);
-    logger("[ERROR]", ..., logDestination=""); # na konsolę też
+    logger("[ERROR]", ..., logDestination = ""); # na konsolę też
 }
 
 
@@ -61,5 +61,5 @@ showProgress = function(iteration, bestPoint) {
             "], Best [", P_values[bestPoint],
             "], Err [", abs(P_values[bestPoint] - optimumValue),
             "], Spread [", maxSpread(),
-            "], Coords [", paste(P[bestPoint,], collapse=", "), "]");
+            "], Coords [", paste(P[bestPoint,], collapse = ", "), "]");
 }

@@ -6,7 +6,7 @@
 library("cec2005benchmark");
 
 # TODO dorobić resztę funkcji (+ limits)
-availableDimensions = c(50); # liczby wymiarów, dla których testujemy każdą z funkcji
+availableDimensions = c(2, 10, 30); # liczby wymiarów, dla których testujemy każdą z funkcji
 availableFunctions = c(1); # lista funkcji z benchmarku, na których będziemy testować algorytm
 names(availableFunctions) = c(
                               "F1: Shifted Sphere Function"

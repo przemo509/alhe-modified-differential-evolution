@@ -21,9 +21,10 @@ testFunction = function(stretchingOn) {
         
         zMatrix = matrix(nrow = P_size, ncol = dimensions);
         for(i in 1:P_size) {
-            x = sample.int(P_size, size = 1);
-            x_k = sample.int(P_size, size = 1);
-            x_l = sample.int(P_size, size = 1);
+            samples = sample.int(P_size, size = 3, replace = TRUE);
+            x = samples[1];
+            x_k = samples[2];
+            x_l = samples[3];
             
             v_Raw = P[x_k,] - P[x_l,];
             paramA = calculateStretching(v_Raw, stretchingOn);
@@ -40,9 +41,11 @@ testFunction = function(stretchingOn) {
         partialResult = buildResultPartIfNeeded(partialResult, P_values[bestPointSoFar]);
         
         if(better == "max") {
-            P[zValues>P_values,] = zMatrix[zValues>P_values,];
+            P[zValues > P_values,] <<- zMatrix[zValues > P_values,];
+            P_values[zValues>P_values] <<- zValues[zValues>P_values];
         } else {
-            P[zValues < P_values,] = zMatrix[zValues < P_values,];
+            P[zValues < P_values,] <<- zMatrix[zValues < P_values,];
+            P_values[zValues < P_values] <<- zValues[zValues < P_values];
         }
         
         bestPointSoFar = bestFromPopulation();
@@ -50,7 +53,7 @@ testFunction = function(stretchingOn) {
     }
     
     showProgress(iteration, bestPointSoFar);
-    partialResult = finishResultPart(partialResult, P_values[bestPointSoFar]);
+    partialResult = finishResultPart(partialResult, bestPointSoFar);
     return(partialResult);
 }
 
@@ -104,7 +107,7 @@ stopAlgorithm = function(bestValue, iteration) {
 
 # funkcja wyznaczająca maksymalną rozpiętość wartości współrzędnej w jednym wymiarze (czyli w kostce, nie w kuli)
 maxSpread = function() {
-    rangesByDimensions = apply(populationCoords, 2, range);                 # min i max
+    rangesByDimensions = apply(P, 2, range);                                # min i max
     spreadByDimensions = rangesByDimensions[2,] - rangesByDimensions[1,];   # max - min
     return(max(spreadByDimensions));
 }
@@ -128,7 +131,7 @@ calculateStretching = function(vec, stretchingOn) {
 applyLimitsToPoint = function(a, b) {
     startPoint = a;
     endPoint = b;
-    bisectionAccuracy = 0.01;
+    bisectionAccuracy = abs(limitRight - limitLeft)*0.001;
     
     distance = maxDistanceToLimit(endPoint);
     if(distance < 0) {
@@ -162,8 +165,8 @@ maxDistanceToLimit = function(point) {
 # przepisuje z p-stwem CR współrzędną z pierwszego z nich
 crossOver = function(a, b) {
     probs = runif(dimensions);
-    result = a;
-    result[probs>paramCR] = b[probs>paramCR];   # z punktu b brane są współrzędne z prawdopodobieństwem (1-CR)
+    result = b;
+    result[probs>paramCR] = a[probs>paramCR];   # z punktu a brane są współrzędne z prawdopodobieństwem (1-CR)
     return(result);
 }
 

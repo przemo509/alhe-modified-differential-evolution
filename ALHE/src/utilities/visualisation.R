@@ -4,6 +4,33 @@
 ###############################################################################
 # 
 
+# zapisujemy obrazek z wykresem funkcji
+drawHighResPlot = function(functionNumber) {
+    require("grDevices");
+    
+    xResolution = 1e2;
+    yResolution = 1e2;
+    zResolution = 1e3; # liczba kolorów
+    
+    xAxis = seq(limitLeft, limitRight, length = xResolution);
+    yAxis = seq(limitLeft, limitRight, length = yResolution);
+    xCoords = rep(xAxis, times = yResolution);
+    yCoords = rep(yAxis, each = xResolution);
+    xyCoords = cbind(xCoords, yCoords);
+    results = value(xyCoords); # funkcja celu wołana jest raz dla miliona punktów, co trwa 0.1 sekundy
+    
+    resultsMatrix = matrix(results, ncol = xResolution);
+    png(paste0(partsDir, functionNumber, "/F_", functionNumber, "_plot.png"), width = 1040, height = 1060);
+    
+    image(xAxis, yAxis, resultsMatrix, useRaster = TRUE,
+          col = gray.colors(zResolution, start = 0, end = 1));
+    contour(xAxis, yAxis, resultsMatrix, nlevels = 20, add = TRUE, labcex = 0.8);
+    
+    dev.off();
+    
+    currFES <<- 0; # zerujemy licznik wywołań funkcji, bo te powyższe nie dotyczą algorytmu
+}
+
 # generujemy dane dla wykresu 2D, żeby nie obliczać tego za każdym razem, kiedy chcemy go rysować
 initVisualisation = function() {
     if(loggingLevel < LVL_SHOW_POPULATION) {
@@ -24,7 +51,7 @@ initVisualisation = function() {
     
     resultsMatrix = matrix(results, ncol = xResolution);
     image(xAxis, yAxis, resultsMatrix, useRaster = TRUE,
-          col = gray.colors(zResolution, start = 0, end = 1));
+            col = gray.colors(zResolution, start = 0, end = 1));
     contour(xAxis, yAxis, resultsMatrix, nlevels = 20, add = TRUE);
     functionPlot <<- recordPlot();
     

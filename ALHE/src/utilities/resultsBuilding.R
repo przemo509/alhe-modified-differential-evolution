@@ -9,8 +9,8 @@ resultsFile = paste0(resultsDir, "completed.txt");
 allRunsFile = paste0(resultsDir, "all_runs.txt");
 partsDir = paste0(resultsDir, "parts/");
 resultFields = c("err3",  "err4",  "err5", "errTerm", "fixedFES", "termFES", "resultX", "resultY");
-finalFields = 6; # 6 to liczba parametrów, które chcemy na końcowym wyniku (excelu)
-resultFieldsDetails = c("1st",  "7th",  "13th", "19th", "25th", "mean", "std");
+finalFields = 6; # 6 to liczba parametrów, które chcemy na końcowym wyniku (excelu), np. nie chcemy resultX ani resultY
+resultFieldsDetails = c("1st (Best)",  "7th",  "13th (Median)", "19th", "25th (Worst)", "mean", "std");
 resultFieldsDetailsNumbers = c(1, 7, 13, 19, 25);
 
 # procedura sprawdzająca istnienie częściowych wyników
@@ -72,7 +72,7 @@ initResultPart = function() {
     for(i in 1:length(resultFields)) {
         part[resultFields[i]] = 0;
     }
-    part[resultFields[5]] = part[resultFields[6]] = Inf; # fixedFES i termFES
+    part[resultFields[5]] = part[resultFields[6]] = maxFES; # fixedFES i termFES
     return(part);
 }
 
@@ -80,16 +80,16 @@ buildResultPartIfNeeded = function(partToUpdate, bestPointValue) {
     accuracy = abs(bestPointValue - optimumValue);
     
     # rejestrujemy dokładność, w trzech momentach: 1e3, 1e4 i 1e5 FES
-    if(currFES == 1e3) {
+    if(currFES >= 1e3 && partToUpdate[resultFields[1]] == 0) {
         partToUpdate[resultFields[1]] = accuracy;
-    } else if(currFES == 1e4) {
+    } else if(currFES >= 1e4 && partToUpdate[resultFields[2]] == 0) {
         partToUpdate[resultFields[2]] = accuracy;
-    } else if(currFES == 1e5) {
+    } else if(currFES >= 1e5 && partToUpdate[resultFields[3]] == 0) {
         partToUpdate[resultFields[3]] = accuracy;
     }
     
     # rejestrujemy liczbę FES wymaganą do osiągnięcia określonej dokładności
-    if(accuracy < fixedAccuracy && is.infinite(partToUpdate[resultFields[5]][[1]])) { # tylko pierwsze rejestrujemy
+    if(accuracy < fixedAccuracy && partToUpdate[resultFields[5]] != maxFES) {
         partToUpdate[resultFields[5]] = currFES;
     }
     
@@ -159,35 +159,95 @@ buildExcel = function(results) {
         for(funNo in 1:length(funcsNumbers)) {
             matrixOFF = results[[dims[dimNo]]][[funcsNumbers[funNo]]][["OFF"]];
             matrixON = results[[dims[dimNo]]][[funcsNumbers[funNo]]][["ON"]];
-            matrixOFF = matrixOFF[, do.call(order, lapply(1:NROW(matrixOFF), function(row) matrixOFF[row, ]))];
-            matrixON = matrixON[, do.call(order, lapply(1:NROW(matrixON), function(row) matrixON[row, ]))];
+            matrixOFF = t(apply(matrixOFF, 1, sort));
+            matrixON = t(apply(matrixON, 1, sort));
             
-            endRow = 3 + finalFields*(length(resultFieldsDetailsNumbers)+2) + 2;
+            startRow = 2;
+            rowsCount = 2 + finalFields*(length(resultFieldsDetailsNumbers)+2) + 2;
             startColumn = 3+(funNo-1)*2;
-            rows = createRow(sheet, rowIndex = 2:endRow);
-            cells = createCell(rows, colIndex = startColumn:startColumn+2);
-            setCellValue(cells[[1, 1]], paste0('F', funcsNumbers[funNo]));
-            setCellValue(cells[[2, 1]], "OFF");
-            setCellValue(cells[[2, 2]], "ON");
+            addMergedRegion(sheet, 2, 2, startColumn, startColumn + 1);
+            cells = CellBlock(sheet, startRow, startColumn, rowsCount, 2);
+            CB.setBorder(cells, Border(position = "RIGHT"), 2:rowsCount, 2);
+            CB.setColData(cells, paste0('F', funcsNumbers[funNo]), 1,
+                    colStyle = CellStyle(wb) + 
+                            Alignment(horizontal = "ALIGN_CENTER") + 
+                            Font(wb, isBold = TRUE) +
+                            Border(position = "TOP"));
+            CB.setBorder(cells, Border(position = c("RIGHT", "TOP")), 1, 2);
+            CB.setColData(cells, "OFF", 1, 1,
+                    colStyle = CellStyle(wb) + 
+                            Alignment(horizontal = "ALIGN_CENTER") + 
+                            Font(wb, isBold = TRUE) +
+                            Border(position = c("RIGHT", "TOP")));
+            CB.setColData(cells, "ON", 2, 1,
+                    colStyle = CellStyle(wb) + 
+                            Alignment(horizontal = "ALIGN_CENTER") + 
+                            Font(wb, isBold = TRUE) +
+                            Border(position = c("RIGHT", "TOP")));
+            
             for(resultField in 1:NROW(matrixOFF)) {
                 howManyFields = length(resultFieldsDetailsNumbers);
+                CB.setBorder(cells, Border(position = "TOP"), 2+(howManyFields+2)*(resultField-1)+1, c(1, 2));
                 for(resultFieldDetail in 1:howManyFields) {
-                    rowNo = 2 + (howManyFields + 2) * (resultField-1) + resultFieldDetail;
+                    rowNo = 2 + (howManyFields + 2) * (resultField-1) + resultFieldDetail - 1;
                     field = resultFieldsDetailsNumbers[resultFieldDetail];
-                    setCellValue(cells[[rowNo, 1]], matrixOFF[resultField, field]);
-                    setCellValue(cells[[rowNo, 2]], matrixON[resultField, field]);
+                    
+                    value = matrixOFF[resultField, field];
+                    CB.setColData(cells, value, 1, rowNo);
+                    if(resultFields[resultField] == "fixedFES" && value >= maxFES) {
+                        createCellComment(getCells(getRows(sheet, startRow + rowNo), startColumn)[[1]],
+                                string = "Nie osiągnięto 'fixedAccuracy'");
+                    } else if(resultFields[resultField] == "termFES" && value >= maxFES) {
+                        createCellComment(getCells(getRows(sheet, startRow + rowNo), startColumn)[[1]],
+                                string = "Nie osiągnięto 'terErr'");
+                    }
+                    
+                    value = matrixON[resultField, field];
+                    if(resultFields[resultField] == "fixedFES" && value >= maxFES) {
+                        createCellComment(getCells(getRows(sheet, startRow + rowNo), startColumn + 1)[[1]],
+                                string = "Nie osiągnięto 'fixedAccuracy'");
+                    } else if(resultFields[resultField] == "termFES" && value >= maxFES) {
+                        createCellComment(getCells(getRows(sheet, startRow + rowNo), startColumn + 1)[[1]],
+                                string = "Nie osiągnięto 'terErr'");
+                    }
+                    CB.setColData(cells, value, 2, rowNo);
                 }
-                # mean
-                # std
+                CB.setColData(cells, mean(matrixOFF[resultField, ]), 1, rowNo+1);
+                CB.setColData(cells, mean(matrixON[resultField, ]), 2, rowNo+1);
+                CB.setColData(cells, sd(matrixOFF[resultField, ]), 1, rowNo+2);
+                CB.setColData(cells, sd(matrixON[resultField, ]), 2, rowNo+2);
+                CB.setFill(cells, Fill(foregroundColor = "gray80"), c(rowNo+1, rowNo+1, rowNo+2, rowNo+2)+1, c(1, 2, 1, 2));
             }
+            
+            rowNo = 3 + length(resultFieldsDetails)*finalFields + 1;
+            cells = CellBlock(sheet, rowNo, startColumn, 2, 2);
+            CB.setBorder(cells, Border(position = "TOP"), 1, 1:2);
+            CB.setBorder(cells, Border(position = "RIGHT"), 1:2, 2);
+            CB.setBorder(cells, Border(position = c("TOP", "BOTTOM")), 2, 1:2);
+            fffNo = match("fixedFES", resultFields); #fixedFESFieldNo
+            
+            successFES = matrixOFF[fffNo, matrixOFF[fffNo, ] < maxFES];
+            successCount = length(successFES);
+            successRate = paste0(100*round(successCount / howManyRuns), '%');
+            successPerformance = mean(successFES) * howManyRuns / successCount;
+            CB.setColData(cells, successRate, 1);
+            CB.setColData(cells, successPerformance, 1, 1);
+            
+            successFES = matrixON[fffNo, matrixON[fffNo, ] < maxFES];
+            successCount = length(successFES);
+            successRate = round(successCount / howManyRuns);
+            successPerformance = mean(successFES) * howManyRuns / successCount;
+            CB.setColData(cells, successRate, 2, colStyle = CellStyle(wb) + DataFormat("Percent"));
+            CB.setColData(cells, successPerformance, 2, 1);
         }
     }
     
-    finalResultPath = paste0(resultsDir, "finalResult.xlsx")
+    finalResultPath = paste0(resultsDir, "finalResult.xlsx");
     saveWorkbook(wb, finalResultPath);
     fullPath = paste0(getwd(), '/', finalResultPath);
-    loggerCONSOLE("Excel created: ", fullPath, '\n');
+    loggerCONSOLE("Excel created: ", fullPath, "\nOpening result file...\n");
     system(paste0("open ", fullPath));
+    loggerCONSOLE("=== END ===\n");
 }
 
 createEmptySheet = function(wb, dim) {
@@ -198,28 +258,59 @@ createEmptySheet = function(wb, dim) {
     
     # tytuł
     addMergedRegion(sheet, 1, 1, 1, 4);
-    row = createRow(sheet, rowIndex = 1);
-    cell = createCell(row, colIndex = 1)[[1, 1]];
-    setCellValue(cell, "Tytuł");
+    cell = CellBlock(sheet, 1, 1, 1, 1);
+    CB.setColData(cell, "Tytuł", 1, colStyle = CellStyle(wb) + Alignment(horizontal = "ALIGN_CENTER"));
     
     # dim
-    addMergedRegion(sheet, 2, 3, 1, 2);
-    row = createRow(sheet, rowIndex = 2);
-    cell = createCell(row, colIndex = 1)[[1, 1]];
-    setCellValue(cell, paste0("dim_", dim, ", maxFES = ", maxFES));
+    cells = CellBlock(sheet, 2, 1, 2, 2);
+    CB.setColData(cells, "dimensions:", 1);
+    CB.setColData(cells, dim, 2);
+    CB.setColData(cells, "maxFES:", 1, 1);
+    CB.setColData(cells, maxFES, 2, 1);
+    CB.setBorder(cells, Border(position = "TOP"), 1, 1:2);
+    CB.setBorder(cells, Border(position = "LEFT"), 1:2, 1);
+    CB.setBorder(cells, Border(position = "RIGHT"), 1:2, 2);
     
     for(i in 1:finalFields) {
         baseRow = 3 + 1 + (i-1)*length(resultFieldsDetails);
-        endRow = baseRow + length(resultFieldsDetails) - 1;
-        addMergedRegion(sheet, baseRow, endRow, 1, 1);
-        row = createRow(sheet, rowIndex = baseRow:endRow);
-        cells = createCell(row, colIndex = 1:2);
-        setCellValue(cells[[1, 1]], resultFields[i]);
+        rowsCount = length(resultFieldsDetails);
+        addMergedRegion(sheet, baseRow, baseRow + rowsCount - 1, 1, 1);
+        cells = CellBlock(sheet, baseRow, 1, rowsCount, 2);
+        CB.setColData(cells, resultFields[i], 1,
+                colStyle = CellStyle(wb) + 
+                        Alignment(horizontal = "ALIGN_CENTER", vertical = "VERTICAL_CENTER") +
+                        Border(position = "TOP"));
+        CB.setBorder(cells, Border(position = "LEFT"), 1:rowsCount, 1);
         
         for(j in 1:length(resultFieldsDetails)) {
-            setCellValue(cells[[j, 2]], resultFieldsDetails[j]);
+            borderPositions = c("LEFT", "RIGHT");
+            bgColor = "white";
+            if(j == 1) borderPositions = c(borderPositions, "TOP");
+            if(j >= length(resultFieldsDetails)-1) bgColor = "gray80";
+            CB.setColData(cells, resultFieldsDetails[j], 2, j-1, 
+                    colStyle = CellStyle(wb) +
+                            Border(position = borderPositions) +
+                            Fill(foregroundColor = bgColor));
         }
     }
+    
+    rowNo = 3 + length(resultFieldsDetails)*finalFields + 1;
+    addMergedRegion(sheet, rowNo, rowNo, 1, 2);
+    CB.setColData(CellBlock(sheet, rowNo, 1, 1, 1), "Success Rate", 1, 
+            colStyle = CellStyle(wb) +
+                    Alignment(horizontal = "ALIGN_CENTER", vertical = "VERTICAL_CENTER") +
+                    Border(position = c("LEFT", "TOP")));
+    CB.setBorder(CellBlock(sheet, rowNo, 2, 1, 1), Border(position = c("RIGHT", "TOP")), 1, 1);
+    
+    rowNo = rowNo + 1;
+    addMergedRegion(sheet, rowNo, rowNo, 1, 2);
+    CB.setColData(CellBlock(sheet, rowNo, 1, 1, 1), "Success Performance", 1, 
+            colStyle = CellStyle(wb) +
+                    Alignment(horizontal = "ALIGN_CENTER", vertical = "VERTICAL_CENTER") +
+                    Border(position = c("BOTTOM", "LEFT", "TOP")));
+    CB.setBorder(CellBlock(sheet, rowNo, 2, 1, 1), Border(position = c("BOTTOM", "RIGHT", "TOP")), 1, 1);
+    
+    autoSizeColumn(sheet, c(1,2));
     
     return(sheet);
 }

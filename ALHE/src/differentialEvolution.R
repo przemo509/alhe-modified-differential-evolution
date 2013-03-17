@@ -82,7 +82,7 @@ bestFromPopulation = function() {
 stopAlgorithm = function(bestValue, iteration) {
     # warunek na liczbę ewaluacji funkcji celu
     loggerINFO("D=[", dimensions, "], I=[", iteration, "], FES=[", currFES, "], BEST=[", bestValue, "]"); # TODO jakie info jest przydatne? i kiedy je wypisywać?
-    if(currFES > maxFES) {
+    if(currFES >= maxFES) {
         return(TRUE);        
     }
     

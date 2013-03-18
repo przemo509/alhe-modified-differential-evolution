@@ -89,7 +89,7 @@ buildResultPartIfNeeded = function(partToUpdate, bestPointValue) {
     }
     
     # rejestrujemy liczbę FES wymaganą do osiągnięcia określonej dokładności
-    if(accuracy < fixedAccuracy && partToUpdate[resultFields[5]] != maxFES) {
+    if(accuracy < fixedAccuracy && partToUpdate[resultFields[5]] == maxFES) {
         partToUpdate[resultFields[5]] = currFES;
     }
     

@@ -58,8 +58,7 @@ saveResults = function(functionNumber, dimensions, runNo, resultOff, resultOn) {
     
     # i jeszcze info o zapisaniu częściowego wyniku
     # TODO zapisywać raczej co zrobiono (albo też)
-    cat(paste(functionNumber, dimensions, runNo), file = paste0(resultsDir, "completed.txt"),
-        append = TRUE, fill = TRUE);
+    cat(paste(functionNumber, dimensions, runNo), file = resultsFile, append = TRUE, fill = TRUE);
 }
 
 
@@ -89,8 +88,10 @@ buildResultPartIfNeeded = function(partToUpdate, bestPointValue) {
     }
     
     # rejestrujemy liczbę FES wymaganą do osiągnięcia określonej dokładności
-    if(accuracy < fixedAccuracy && partToUpdate[resultFields[5]] == maxFES) {
-        partToUpdate[resultFields[5]] = currFES;
+    if(accuracy < fixedAccuracy) {
+        if(partToUpdate[resultFields[5]] == maxFES) {
+            partToUpdate[resultFields[5]] = currFES;
+        }
     }
     
     return(partToUpdate);
@@ -115,15 +116,41 @@ mergeResultsParts = function() {
     source("utilities/logging.R");
     initLogging();
     
+    checkRJava();
     results = collectParts();
     invisible(buildExcel(results));
 }
 
+checkRJava = function() {
+    oldPath = Sys.getenv("PATH");
+    javaHome = Sys.getenv("JAVA_HOME");
+    newPath = paste0(oldPath, ';', javaHome, "\\jre\\bin\\server"); # ścieżka do jvm.dll
+    Sys.setenv(PATH = newPath);
+    
+    if(newPath != Sys.getenv("PATH")) {
+        loggerERROR("Nie udało się ustawić ścieżki do jvm.dll");
+    }
+}
+
+xtfrm.runs_lines = function(a) {
+    splitted = strsplit(a, " ");
+    numbers = sapply(splitted, myStringToNumber);
+    return(numbers);
+}
+
+myStringToNumber = function(line) {
+    numbers = as.integer(line);
+    result = 1e6 * numbers[1] + 1e3 * numbers[2] + 1e0 * numbers[3];
+    return(result);
+}
+
 collectParts = function() {
     completedFileContent = readLines(resultsFile, warn = FALSE);
+    class(completedFileContent) = "runs_lines";
+    sortedContent = sort(completedFileContent);
     
     dims = list();
-    for(row in completedFileContent) {
+    for(row in sortedContent) {
         funDimRun = strsplit(row, split = " ")[[1]];
         funNo = as.integer(funDimRun[1]);
         dim = as.integer(funDimRun[2]);
@@ -153,7 +180,7 @@ buildExcel = function(results) {
     
     dims = names(results);
     for(dimNo in 1:length(dims)) {
-        sheet = createEmptySheet(wb, dims[dimNo]);
+        sheet = createEmptySheet(wb, as.integer(dims[dimNo]));
         
         funcsNumbers = names(results[[dims[dimNo]]]);
         for(funNo in 1:length(funcsNumbers)) {
@@ -221,24 +248,36 @@ buildExcel = function(results) {
             
             rowNo = 3 + length(resultFieldsDetails)*finalFields + 1;
             cells = CellBlock(sheet, rowNo, startColumn, 2, 2);
-            CB.setBorder(cells, Border(position = "TOP"), 1, 1:2);
-            CB.setBorder(cells, Border(position = "RIGHT"), 1:2, 2);
-            CB.setBorder(cells, Border(position = c("TOP", "BOTTOM")), 2, 1:2);
             fffNo = match("fixedFES", resultFields); #fixedFESFieldNo
             
             successFES = matrixOFF[fffNo, matrixOFF[fffNo, ] < maxFES];
             successCount = length(successFES);
-            successRate = paste0(100*round(successCount / howManyRuns), '%');
-            successPerformance = mean(successFES) * howManyRuns / successCount;
-            CB.setColData(cells, successRate, 1);
-            CB.setColData(cells, successPerformance, 1, 1);
+            successRate = successCount / howManyRuns;
+            if(successCount == 0) {
+                successPerformance = "-";
+            } else {
+                successPerformance = mean(successFES) * howManyRuns / successCount;
+            }
+            CB.setColData(cells, paste0(100*round(successRate, digits = 2), '%'), 1,
+                    colStyle = CellStyle(wb) + Alignment(horizontal = "ALIGN_RIGHT"));
+            CB.setColData(cells, successPerformance, 1, 1,
+                    colStyle = CellStyle(wb) + Alignment(horizontal = "ALIGN_RIGHT"));
             
             successFES = matrixON[fffNo, matrixON[fffNo, ] < maxFES];
             successCount = length(successFES);
-            successRate = round(successCount / howManyRuns);
-            successPerformance = mean(successFES) * howManyRuns / successCount;
-            CB.setColData(cells, successRate, 2, colStyle = CellStyle(wb) + DataFormat("Percent"));
-            CB.setColData(cells, successPerformance, 2, 1);
+            successRate = successCount / howManyRuns;
+            if(successCount == 0) {
+                successPerformance = "-";
+            } else {
+                successPerformance = mean(successFES) * howManyRuns / successCount;
+            }
+            CB.setColData(cells, paste0(100*round(successRate, digits = 2), '%'), 2,
+                    colStyle = CellStyle(wb) + Alignment(horizontal = "ALIGN_RIGHT"));
+            CB.setColData(cells, successPerformance, 2, 1,
+                    colStyle = CellStyle(wb) + Alignment(horizontal = "ALIGN_RIGHT"));
+            CB.setBorder(cells, Border(position = "TOP"), 1, 1:2);
+            CB.setBorder(cells, Border(position = "RIGHT"), 1:2, 2);
+            CB.setBorder(cells, Border(position = c("TOP", "BOTTOM")), 2, 1:2);
         }
     }
     
@@ -252,7 +291,7 @@ buildExcel = function(results) {
 
 createEmptySheet = function(wb, dim) {
     source("functions/cec2005problems.R");
-    loadDimsSpecifics(1, as.integer(dim)); # ustawia maxFES
+    loadDimsSpecifics(1, dim); # ustawia maxFES
     
     sheet = createSheet(wb, sheetName = paste0("dim_", dim));
     

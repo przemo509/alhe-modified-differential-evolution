@@ -37,9 +37,6 @@ testFunction = function(stretchingOn) {
         }
         zValues = value(zMatrix);
         
-        # najlepiej zapisywać wynik od razu po value(), żeby być jak najbliżej currFes
-        partialResult = buildResultPartIfNeeded(partialResult, P_values[bestPointSoFar]);
-        
         if(better == "max") {
             P[zValues > P_values,] <<- zMatrix[zValues > P_values,];
             P_values[zValues>P_values] <<- zValues[zValues>P_values];
@@ -49,6 +46,7 @@ testFunction = function(stretchingOn) {
         }
         
         bestPointSoFar = bestFromPopulation();
+        partialResult = buildResultPartIfNeeded(partialResult, P_values[bestPointSoFar]);
         iteration = iteration+1;
     }
     

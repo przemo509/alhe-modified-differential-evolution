@@ -8,31 +8,39 @@
 ###############################################################################
 rm(list = ls(all = TRUE));  # upewniamy się, że nie ma żadnych śmieci (np. z poprzednich uruchomień)
 # wymazane zostają również wartości zmiennych lokalnych i parametrów funkcji, dlatego nie można umieścić tego w run()
-run = function(startOver = FALSE) {
+run = function(functionNumbers = 1, dimensions = 2, howManyRuns = 25, startOver = FALSE) {
     cat("===== START =====\n");
     init("functions/cec2005problems.R", startOver);
     
-    allRuns = length(availableFunctions) * length(availableDimensions) * howManyRuns;
+    allRuns = length(functionNumbers) * length(dimensions) * howManyRuns;
     currRun = 1;
-    for (functionNumber in availableFunctions) {
-        initFunction(functionNumber);
-        for(dims in availableDimensions) {
-            initDimsSpecifics(functionNumber, dims);
+    for(dim in dimensions) {
+        if(!dim %in% availableDimensions) {
+            loggerERROR("Nieobslugiwana liczba wymiarow: ", dim, ". Obslugiwane sa tylko: [",
+                    paste(availableDimensions, collapse = ", "), "]");
+        }
+        for (functionNumber in functionNumbers) {
+            if(!functionNumber %in% availableFunctions) {
+                loggerERROR("Nieobslugiwana funkcja: ", functionNumber, ". Obslugiwane sa tylko: [",
+                        paste(availableFunctions, collapse = ", "), "]");
+            }
+            initFunction(functionNumber);
+            initDimsSpecifics(functionNumber, dim);
             for(runNo in 1:howManyRuns) {
-                if(!alreadyTested(functionNumber, dims, runNo)) {
+                if(!alreadyTested(functionNumber, dim, runNo)) {
                     oldSeed = .Random.seed;
                     loggerINFO("=====================================================================");
-                    loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dims, ", przebieg: ", runNo, ", OFF");
+                    loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dim, ", przebieg: ", runNo, ", OFF");
                     loggerINFO("=====================================================================");
                     resultOff = testFunction(stretchingOn = FALSE);
                     
                     .Random.seed <<- oldSeed;
                     loggerINFO("=====================================================================");
-                    loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dims, ", przebieg: ", runNo, ", ON");
+                    loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dim, ", przebieg: ", runNo, ", ON");
                     loggerINFO("=====================================================================");
                     resultOn = testFunction(stretchingOn = TRUE);
                     
-                    saveResults(functionNumber, dims, runNo, resultOff, resultOn);
+                    saveResults(functionNumber, dim, runNo, oldSeed, resultOff, resultOn);
                 }
                 loggerCONSOLE("Postep: ", 100 * currRun / allRuns, " %                             \r");
                 currRun = currRun + 1;
@@ -49,7 +57,7 @@ init = function(functionFile, startOver) {
     runif(1);                           # inicjujemy ziarno losowości (po tym dopiero utworzy się '.Random.seed')
     source("utilities/logging.R");
     initLogging();
-    loggerClockStart("init", "Initializing sources...");
+    loggerClockStart("init", "Inicjalizacja zrodel");
     source("utilities/globals.R");      # pierwsze, żeby inne pliki mogły nadpisać NULLe
     source("differentialEvolution.R");
     source("utilities/resultsBuilding.R");
@@ -58,15 +66,13 @@ init = function(functionFile, startOver) {
     source(functionFile);
     verifyFunctionToLoad();
     initResults(startOver); # musi być po verifyFunctionToLoad()
-    loggerClockStop("init", "Initializing sources finished.");
+    loggerClockStop("init");
 }
 
 # inicjalizacja funkcji celu (w tym zmiennych globalnych i tego co od nich zależy, np. wykresu 2D)
 initFunction = function(functionNumber) {
     loadFunction(functionNumber);
-    loggerClockStart("HD_plot", paste0("Rendering high-resolution plot for function number ", functionNumber, "..."));
     drawHighResPlot(functionNumber);
-    loggerClockStop("HD_plot", "Plot rendered.");
 }
 
 # inicjalizacja parametrów funkcji celu zależnych od liczby wymiarów: maxFES i optimum
@@ -98,4 +104,46 @@ runProf = function() {
     
     loggerCONSOLE("\n=====  END PROF  =====\n");
     summaryRprof(profilerDataFile);
+}
+
+runDebug = function(seedFrom = c(1, 2, 1)) {
+    seedFrom = as.integer(seedFrom);
+    if(length(seedFrom) != 3) {
+        stop("Zle dane wejsciowe. Przyklad: runDebug(c(1, 2, 1))")
+    }
+    
+    init("functions/cec2005problems.R", FALSE);
+    loggingLevel <<- LVL_NO_LOG;
+    loggerCONSOLE("\n=====  START DEBUG  =====\n");
+    
+    functionNo = seedFrom[1];
+    dim = seedFrom[2];
+    runNo = seedFrom[3];
+    resultPartFile = paste0(partsDir, functionNo, '/', dim, '/', runNo, ".txt");
+    trySeed = scan(resultPartFile, nlines = 1, what = "list", quiet = TRUE);
+    if(trySeed[1] != "seed") {
+        stop(paste("Brak ziarna w pliku", resultPartFile));
+    }
+    oldSeed = as.integer(trySeed[-1]);
+    oldResults = as.matrix(read.table(resultPartFile, skip = 1));
+    initFunction(functionNo);
+    initDimsSpecifics(functionNo, dim);
+    runif(1);
+    
+    .Random.seed <<- oldSeed;
+    newResultOff = testFunction(stretchingOn = FALSE);
+    .Random.seed <<- oldSeed;
+    newResultOn = testFunction(stretchingOn = TRUE);
+    newResults = matrix(
+            unlist(c(newResultOff, newResultOn)),
+            ncol = length(resultFields),
+            nrow = 2,
+            dimnames = list(c("OFF", "ON"), resultFields),
+            byrow = TRUE
+    );
+    if(!all.equal(oldResults, newResults)) {
+        stop("Osiagnieto inne wyniki niz zapisano w pliku!");
+    }
+    
+    loggerCONSOLE("\n=====  END DEBUG  =====\n");
 }

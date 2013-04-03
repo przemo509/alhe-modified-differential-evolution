@@ -7,13 +7,6 @@
 # danych. Innym rozwiązaniem byłoby wykorzystanie obiektowych rozszerzeń języka
 # R, które umożliwiają przekazywanie argumentów przez referencję.
 
-
-
-###############################################################################
-# parametry benchmarku CEC2005
-###############################################################################
-howManyRuns = 25; # ile razy uruchomić każdą konfigurację, żeby wyciągnąć średni wynik
-
 ###############################################################################
 # parametry algorytmu ewolucyjnego
 ###############################################################################

@@ -14,7 +14,6 @@
 verifyFunctionToLoad = function() {
     ok = TRUE;
     if(is.null(availableFunctions)) {ok = FALSE; loggerERROR("Brak parametru: 'availableFunctions'");}
-    if(is.null(names(availableFunctions))) {loggerWARN("Parametr: 'availableFunctions' nie zawiera nazw funkcji. Wyniki beda opisane tylko numerami funkcji.");}
     if(is.null(availableDimensions)) {ok = FALSE; loggerERROR("Brak parametru: 'availableDimensions'");}
     if(is.null(loadFunction)) {ok = FALSE; loggerERROR("Brak parametru: 'loadFunction'");}
     if(is.null(loadDimsSpecifics)) {ok = FALSE; loggerERROR("Brak parametru: 'loadDimsSpecifics'");}
@@ -22,7 +21,6 @@ verifyFunctionToLoad = function() {
     if(ok == FALSE) {
         msg = "Blad w pliku z zawierajacym definicje funkcji. Popraw go i uruchom skrypt ponownie.";
         loggerERROR(msg);
-        stop(paste0(msg, "\n "));
     }
 }
 

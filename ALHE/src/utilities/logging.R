@@ -25,7 +25,7 @@ initLogging = function() {
 
 # procedura wołana przez inne, specjalizowane procedury logujące
 logger = function(level, ..., logDestination = logFile) {
-    cat(as.character.Date(Sys.time()), ' ', level, ' ', ...,
+    cat(as.character.Date(Sys.time()), " ", level, " ", ...,
         sep = "", fill = TRUE, file = logDestination, append = TRUE);
 }
 
@@ -53,32 +53,25 @@ loggerWARN = function(...) {
 
 loggerERROR = function(...) {
     logger("[ERROR]", ...);
-    logger("[ERROR]", ..., logDestination = ""); # na konsolę też
+    stop("[ERROR] ", ..., "\n  ", call. = FALSE);
 }
 
-loggerClockStart = function(clockName, startMsg = "") {
-    clocks[clockName] <<- list(Sys.time());
-    if(startMsg == "") {
-        return();
-    }
-    loggerCONSOLE(paste0(startMsg, '\n'));
-    loggerINFO(startMsg);
+loggerClockStart = function(clockName, msg) {
+    clocks[[clockName]] <<- list(start = Sys.time(), msg = msg);
+    loggerCONSOLE(msg, "...\n");
+    logger("[CLOCK]", msg, "...");
 }
 
-loggerClockStop = function(clockName, stopMsg = "") {
-    startTime = clocks[[clockName]];
-    if(is.null(startTime)) {
-        loggerERROR(paste0("Clock [", clockName, "] does not exists!"));
-        return();
+loggerClockStop = function(clockName) {
+    clock = clocks[[clockName]];
+    if(is.null(clock)) {
+        loggerERROR("Clock [", clock, "] does not exists!");
     }
+    
+    startTime = clock$start;
     endTime = Sys.time();
     differenceInSeconds = round(as.numeric(endTime - startTime, units = "secs"), 2);
-    if(stopMsg == "") {
-        stopMsg = paste0("Clock [", clockName, "] stopped after ",
-                differenceInSeconds, " minutes");
-    } else {
-        stopMsg = paste0(stopMsg, " Elapsed time: ", differenceInSeconds, " seconds.");
-    }
+    stopMsg = paste0(clock$msg, " zakonczone po ", differenceInSeconds, " sekundach.");
     loggerCONSOLE(paste0(stopMsg, '\n'));
     logger("[CLOCK]", stopMsg);
     clocks[clockName] <<- NULL;

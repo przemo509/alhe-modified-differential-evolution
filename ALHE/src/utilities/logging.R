@@ -19,7 +19,7 @@ logFile = paste0(logPath, "/log.txt");
 clocks = list();
 
 initLogging = function() {
-    options(digits.secs = 3, width = 200); # TODO wypisywać log po kilka tys. linii na raz jeśli profiler znajdzie tu wąskie gardło
+    options(digits.secs = 3, width = 500); # TODO wypisywać log po kilka tys. linii na raz jeśli profiler znajdzie tu wąskie gardło
     cat("", file = logFile, append = FALSE); # usunięcie poprzedniej zawartości
 }
 

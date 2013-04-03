@@ -6,21 +6,28 @@
 
 # zapisujemy obrazek z wykresem funkcji
 drawHighResPlot = function(functionNumber) {
+    plotFile = paste0(partsDir, functionNumber, "/F_", functionNumber, "_plot.png");
+    if(file.exists(plotFile)) {
+        loggerCONSOLE("Generowanie wysokiej rozdzielczosci wykresu dla funkcji nr ", functionNumber, " pominieto - wykres juz istnieje.\n");
+        return();
+    }
+    loggerClockStart("HD_plot", paste0("Generowanie wysokiej rozdzielczosci wykresu dla funkcji nr ", functionNumber));
+    dir.create(paste0(partsDir, functionNumber));
     require("grDevices");
     
     xResolution = 1e2;
     yResolution = 1e2;
     zResolution = 1e3; # liczba kolorów
     
-    xAxis = seq(limitLeft, limitRight, length = xResolution);
-    yAxis = seq(limitLeft, limitRight, length = yResolution);
+    xAxis = seq(dimMin(), dimMax(), length = xResolution);
+    yAxis = seq(dimMin(), dimMax(), length = yResolution);
     xCoords = rep(xAxis, times = yResolution);
     yCoords = rep(yAxis, each = xResolution);
     xyCoords = cbind(xCoords, yCoords);
     results = value(xyCoords); # funkcja celu wołana jest raz dla miliona punktów, co trwa 0.1 sekundy
     
     resultsMatrix = matrix(results, ncol = xResolution);
-    png(paste0(partsDir, functionNumber, "/F_", functionNumber, "_plot.png"), width = 1040, height = 1060);
+    png(plotFile, width = 1040, height = 1060);
     
     image(xAxis, yAxis, resultsMatrix, useRaster = TRUE,
           col = gray.colors(zResolution, start = 0, end = 1));
@@ -29,8 +36,24 @@ drawHighResPlot = function(functionNumber) {
     dev.off();
     
     currFES <<- 0; # zerujemy licznik wywołań funkcji, bo te powyższe nie dotyczą algorytmu
+    loggerClockStop("HD_plot");
 }
 
+dimMin = function() {
+    if(is.infinite(limitLeft)) {
+        return(-1000);
+    } else {
+        return(limitLeft);
+    }
+}
+
+dimMax = function() {
+    if(is.infinite(limitRight)) {
+        return(1000);
+    } else {
+        return(limitRight);
+    }
+}
 # generujemy dane dla wykresu 2D, żeby nie obliczać tego za każdym razem, kiedy chcemy go rysować
 initVisualisation = function() {
     if(loggingLevel < LVL_SHOW_POPULATION) {
@@ -41,8 +64,8 @@ initVisualisation = function() {
     yResolution = 1e2;
     zResolution = 1e3; # liczba kolorów
     
-    xAxis = seq(limitLeft, limitRight, length = xResolution);
-    yAxis = seq(limitLeft, limitRight, length = yResolution);
+    xAxis = seq(dimMin(), dimMax(), length = xResolution);
+    yAxis = seq(dimMin(), dimMax(), length = yResolution);
     xCoords = rep(xAxis, times = yResolution);
     yCoords = rep(yAxis, each = xResolution);
     xyCoords = cbind(xCoords, yCoords);
@@ -96,7 +119,7 @@ visualise = function(x_i, x, x_k, x_l, y, yFixed, z) {
     showPoint(z, "purple", 20);
     
     par(xpd = TRUE); # rysowanie poza wykresem (legenda)
-    legend(limitRight-1, limitLeft+1,
+    legend(dimMax()-1, dimMin()+1,
            c("xi", "x", "xk, xl", "y", "z", "better"),
            fill = c("red", "blue", "green", "orange", "purple", "cyan"));
 }

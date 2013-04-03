@@ -6,7 +6,6 @@
 
 resultsDir = "../results/"; 
 resultsFile = paste0(resultsDir, "completed.txt");
-allRunsFile = paste0(resultsDir, "all_runs.txt");
 partsDir = paste0(resultsDir, "parts/");
 resultFields = c("err3",  "err4",  "err5", "errTerm", "fixedFES", "termFES", "resultX", "resultY");
 finalFields = 6; # 6 to liczba parametrów, które chcemy na końcowym wyniku (excelu), np. nie chcemy resultX ani resultY
@@ -14,21 +13,9 @@ resultFieldsDetails = c("1st (Best)",  "7th",  "13th (Median)", "19th", "25th (W
 resultFieldsDetailsNumbers = c(1, 7, 13, 19, 25);
 
 # procedura sprawdzająca istnienie częściowych wyników
-# dzięki nim możemy zatrzymywać i wznawiać testy od pewnego momentu a nie od początku
 initResults = function(startOver) {
     if(!file.exists(resultsFile) || startOver) {
         file.create(resultsFile);
-    }
-    
-    # spiszemy też wszystkie interesujące nas wyniki, można będzie taki plik przenieść na inny komputer,
-    # usunąć z niego częś wpisów i uruchomic algorytm dla części danych
-    cat("", file = allRunsFile);
-    for (functionNumber in availableFunctions) {
-        for(dims in availableDimensions) {
-            for(runNo in 1:howManyRuns) {
-                cat(paste(functionNumber, dims, runNo), file = allRunsFile, append = TRUE, fill = TRUE);
-            }
-        }
     }
 }
 
@@ -42,7 +29,7 @@ alreadyTested = function(functionNumber, dimensions, runNo) {
     return(FALSE);
 }
 
-saveResults = function(functionNumber, dimensions, runNo, resultOff, resultOn) {
+saveResults = function(functionNumber, dimensions, runNo, seed, resultOff, resultOn) {
     dirPath = paste0(partsDir, functionNumber, '/', dimensions, '/');
     dir.create(dirPath, recursive = TRUE, showWarnings = FALSE);
     filePath = paste0(dirPath, runNo, ".txt");
@@ -54,7 +41,8 @@ saveResults = function(functionNumber, dimensions, runNo, resultOff, resultOn) {
             dimnames = list(c("OFF", "ON"), resultFields),
             byrow = TRUE
     );
-    capture.output(print(resultFileContent, print.gap=3, digits=15), file = filePath);
+    cat("seed", seed, '\n', file = filePath);
+    capture.output(print(resultFileContent, print.gap=3, digits=15), file = filePath, append = TRUE);
     
     # i jeszcze info o zapisaniu częściowego wyniku
     # TODO zapisywać raczej co zrobiono (albo też)
@@ -156,7 +144,7 @@ collectParts = function() {
         dim = as.integer(funDimRun[2]);
         runNo = as.integer(funDimRun[3]);
         partPath = paste0(partsDir, funNo, '/', dim, '/', runNo, ".txt");
-        fileData = as.matrix(read.table(partPath));
+        fileData = as.matrix(read.table(partPath, skip = 1));
         
         if(is.null(dims[[paste0(dim)]])) {
             dims[[paste0(dim)]] = list();

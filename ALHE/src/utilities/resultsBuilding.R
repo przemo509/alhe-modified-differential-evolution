@@ -11,6 +11,7 @@ resultFields = c("err3",  "err4",  "err5", "errTerm", "fixedFES", "termFES", "re
 finalFields = 6; # 6 to liczba parametrów, które chcemy na końcowym wyniku (excelu), np. nie chcemy resultX ani resultY
 resultFieldsDetails = c("1st (Best)",  "7th",  "13th (Median)", "19th", "25th (Worst)", "mean", "std");
 resultFieldsDetailsNumbers = c(1, 7, 13, 19, 25);
+requiredRuns = 25;
 
 # procedura sprawdzająca istnienie częściowych wyników
 initResults = function(startOver) {
@@ -151,8 +152,8 @@ collectParts = function() {
         }
         if(is.null(dims[[paste0(dim)]][[paste0(funNo)]])) {
             dims[[paste0(dim)]][[paste0(funNo)]] = list();
-            dims[[paste0(dim)]][[paste0(funNo)]][["OFF"]] = matrix(nrow = finalFields, ncol = howManyRuns);
-            dims[[paste0(dim)]][[paste0(funNo)]][["ON"]] = matrix(nrow = finalFields, ncol = howManyRuns);
+            dims[[paste0(dim)]][[paste0(funNo)]][["OFF"]] = matrix(nrow = finalFields, ncol = requiredRuns);
+            dims[[paste0(dim)]][[paste0(funNo)]][["ON"]] = matrix(nrow = finalFields, ncol = requiredRuns);
         }
         for(i in 1:finalFields) {
             dims[[paste0(dim)]][[paste0(funNo)]][["OFF"]][i, runNo] = fileData[1, resultFields[i]];
@@ -183,11 +184,22 @@ buildExcel = function(results) {
             addMergedRegion(sheet, 2, 2, startColumn, startColumn + 1);
             cells = CellBlock(sheet, startRow, startColumn, rowsCount, 2);
             CB.setBorder(cells, Border(position = "RIGHT"), 2:rowsCount, 2);
-            CB.setColData(cells, paste0('F', funcsNumbers[funNo]), 1,
-                    colStyle = CellStyle(wb) + 
-                            Alignment(horizontal = "ALIGN_CENTER") + 
-                            Font(wb, isBold = TRUE) +
-                            Border(position = "TOP"));
+            if(ncol(matrixOFF) < requiredRuns || ncol(matrixON) < requiredRuns) {
+                CB.setColData(cells, paste0('F', funcsNumbers[funNo], " - not enough runs"), 1,
+                        colStyle = CellStyle(wb) + 
+                                Alignment(horizontal = "ALIGN_CENTER") + 
+                                Font(wb, isBold = TRUE) +
+                                Border(position = "TOP"));
+                CB.setBorder(cells, Border(position = c("RIGHT", "TOP")), 1, 2);
+                CB.setBorder(cells, Border(position = "BOTTOM"), rowsCount, 1:2);
+                next;
+            } else {
+                CB.setColData(cells, paste0('F', funcsNumbers[funNo]), 1,
+                        colStyle = CellStyle(wb) + 
+                                Alignment(horizontal = "ALIGN_CENTER") + 
+                                Font(wb, isBold = TRUE) +
+                                Border(position = "TOP"));
+            }
             CB.setBorder(cells, Border(position = c("RIGHT", "TOP")), 1, 2);
             CB.setColData(cells, "OFF", 1, 1,
                     colStyle = CellStyle(wb) + 
@@ -240,11 +252,11 @@ buildExcel = function(results) {
             
             successFES = matrixOFF[fffNo, matrixOFF[fffNo, ] < maxFES];
             successCount = length(successFES);
-            successRate = successCount / howManyRuns;
+            successRate = successCount / requiredRuns;
             if(successCount == 0) {
                 successPerformance = "-";
             } else {
-                successPerformance = mean(successFES) * howManyRuns / successCount;
+                successPerformance = mean(successFES) * requiredRuns / successCount;
             }
             CB.setColData(cells, paste0(100*round(successRate, digits = 2), '%'), 1,
                     colStyle = CellStyle(wb) + Alignment(horizontal = "ALIGN_RIGHT"));
@@ -253,11 +265,11 @@ buildExcel = function(results) {
             
             successFES = matrixON[fffNo, matrixON[fffNo, ] < maxFES];
             successCount = length(successFES);
-            successRate = successCount / howManyRuns;
+            successRate = successCount / requiredRuns;
             if(successCount == 0) {
                 successPerformance = "-";
             } else {
-                successPerformance = mean(successFES) * howManyRuns / successCount;
+                successPerformance = mean(successFES) * requiredRuns / successCount;
             }
             CB.setColData(cells, paste0(100*round(successRate, digits = 2), '%'), 2,
                     colStyle = CellStyle(wb) + Alignment(horizontal = "ALIGN_RIGHT"));

@@ -8,9 +8,9 @@
 ###############################################################################
 rm(list = ls(all = TRUE));  # upewniamy się, że nie ma żadnych śmieci (np. z poprzednich uruchomień)
 # wymazane zostają również wartości zmiennych lokalnych i parametrów funkcji, dlatego nie można umieścić tego w run()
-run = function(functionNumbers = 1, dimensions = 2, howManyRuns = 25, startOver = FALSE) {
+run = function(functionNumbers = 1, dimensions = 2, howManyRuns = 25, startOver = FALSE, functionDefinitionFile = "cec2005problems.R") {
     cat("===== START =====\n");
-    init("functions/cec2005problems.R", startOver);
+    init(functionDefinitionFile);
     
     allRuns = length(functionNumbers) * length(dimensions) * howManyRuns;
     currRun = 1;
@@ -27,7 +27,7 @@ run = function(functionNumbers = 1, dimensions = 2, howManyRuns = 25, startOver 
             initFunction(functionNumber);
             initDimsSpecifics(functionNumber, dim);
             for(runNo in 1:howManyRuns) {
-                if(!alreadyTested(functionNumber, dim, runNo)) {
+                if(!alreadyTested(functionNumber, dim, runNo) || startOver) {
                     oldSeed = .Random.seed;
                     loggerINFO("=====================================================================");
                     loggerINFO("== Funkcja: ", functionNumber, ", wymiarow: ", dim, ", przebieg: ", runNo, ", OFF");
@@ -49,11 +49,12 @@ run = function(functionNumbers = 1, dimensions = 2, howManyRuns = 25, startOver 
     }
     
     loggerCONSOLE("\n=====  END  =====\n");
+    mergeResultsParts(functionDefinitionFile);
     return("OK");
 }
 
 # ładowanie potrzebnych plików i weryfikowanie ich poprawności
-init = function(functionFile, startOver) {
+init = function(functionFile) {
     runif(1);                           # inicjujemy ziarno losowości (po tym dopiero utworzy się '.Random.seed')
     source("utilities/logging.R");
     initLogging();
@@ -63,9 +64,8 @@ init = function(functionFile, startOver) {
     source("utilities/resultsBuilding.R");
     source("utilities/verification.R");
     source("utilities/visualisation.R");
-    source(functionFile);
+    source(paste0("functions/", functionFile));
     verifyFunctionToLoad();
-    initResults(startOver); # musi być po verifyFunctionToLoad()
     loggerClockStop("init");
 }
 
@@ -89,7 +89,7 @@ initDimsSpecifics = function(functionNumber, dims) {
 runProf = function() {
     
     rm(list = ls(all = TRUE));
-    init("functions/cec2005problems.R", FALSE);
+    init("cec2005problems.R");
     loggingLevel <<- LVL_NO_LOG;
     loggerCONSOLE("\n=====  START PROF  =====\n");
     profilerDataFile = paste0(logPath, "/profilerData.txt");
@@ -112,7 +112,7 @@ runDebug = function(seedFrom = c(1, 2, 1)) {
         stop("Zle dane wejsciowe. Przyklad: runDebug(c(1, 2, 1))")
     }
     
-    init("functions/cec2005problems.R", FALSE);
+    init("cec2005problems.R");
     loggingLevel <<- LVL_NO_LOG;
     loggerCONSOLE("\n=====  START DEBUG  =====\n");
     

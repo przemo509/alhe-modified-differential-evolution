@@ -4,8 +4,7 @@
 ###############################################################################
 # TODO zapisywać też współrzędne punktu, przynajmniej pierwsze dwie, żeby na wykresach znaleźć, ale mogą być wszystkie
 
-resultsDir = "../results/"; 
-resultsFile = paste0(resultsDir, "completed.txt");
+resultsDir = "../results/";
 partsDir = paste0(resultsDir, "parts/");
 resultFields = c("err3",  "err4",  "err5", "errTerm", "fixedFES", "termFES", "resultX", "resultY");
 finalFields = 6; # 6 to liczba parametrów, które chcemy na końcowym wyniku (excelu), np. nie chcemy resultX ani resultY
@@ -13,21 +12,10 @@ resultFieldsDetails = c("1st (Best)",  "7th",  "13th (Median)", "19th", "25th (W
 resultFieldsDetailsNumbers = c(1, 7, 13, 19, 25);
 requiredRuns = 25;
 
-# procedura sprawdzająca istnienie częściowych wyników
-initResults = function(startOver) {
-    if(!file.exists(resultsFile) || startOver) {
-        file.create(resultsFile);
-    }
-}
-
 alreadyTested = function(functionNumber, dimensions, runNo) {
-    fileContent = readLines(resultsFile, warn = FALSE);
-    for(row in fileContent) {
-        if(row == paste(functionNumber, dimensions, runNo)) {
-            return(TRUE);
-        }
-    }
-    return(FALSE);
+    partFile = paste0(partsDir, functionNumber, "/", dimensions, "/", runNo, ".txt");
+    fileExists = file.exists(partFile);
+    return(fileExists);
 }
 
 saveResults = function(functionNumber, dimensions, runNo, seed, resultOff, resultOn) {
@@ -44,10 +32,6 @@ saveResults = function(functionNumber, dimensions, runNo, seed, resultOff, resul
     );
     cat("seed", seed, '\n', file = filePath);
     capture.output(print(resultFileContent, print.gap=3, digits=15), file = filePath, append = TRUE);
-    
-    # i jeszcze info o zapisaniu częściowego wyniku
-    # TODO zapisywać raczej co zrobiono (albo też)
-    cat(paste(functionNumber, dimensions, runNo), file = resultsFile, append = TRUE, fill = TRUE);
 }
 
 
@@ -100,10 +84,12 @@ finishResultPart = function(partToUpdate, bestPoint) {
 fieldNames = c("err3OFF", "err4OFF", "err5OFF", "errTermOFF", "fesOFF",
         "err3ON", "err4ON", "err5ON", "errTermON", "fesON");
 
-mergeResultsParts = function() {
+mergeResultsParts = function(functionFile) {
+    # dzięki poniższym inicjalizacjom można używać tej funkcji niezależnie od run()
     source("utilities/globals.R");
     source("utilities/logging.R");
     initLogging();
+    source(paste0("functions/", functionFile));
     
     checkRJava();
     results = collectParts();
@@ -121,49 +107,44 @@ checkRJava = function() {
     }
 }
 
-xtfrm.runs_lines = function(a) {
-    splitted = strsplit(a, " ");
-    numbers = sapply(splitted, myStringToNumber);
-    return(numbers);
-}
-
-myStringToNumber = function(line) {
-    numbers = as.integer(line);
-    result = 1e6 * numbers[1] + 1e3 * numbers[2] + 1e0 * numbers[3];
-    return(result);
-}
-
 collectParts = function() {
-    completedFileContent = readLines(resultsFile, warn = FALSE);
-    class(completedFileContent) = "runs_lines";
-    sortedContent = sort(completedFileContent);
+    loggerClockStart("collectParts", "Zbieranie wyników cząstkowych");
+    
+    sortedFunctions = sort(availableFunctions);
+    sortedDimensions = sort(availableDimensions);
     
     dims = list();
-    for(row in sortedContent) {
-        funDimRun = strsplit(row, split = " ")[[1]];
-        funNo = as.integer(funDimRun[1]);
-        dim = as.integer(funDimRun[2]);
-        runNo = as.integer(funDimRun[3]);
-        partPath = paste0(partsDir, funNo, '/', dim, '/', runNo, ".txt");
-        fileData = as.matrix(read.table(partPath, skip = 1));
-        
-        if(is.null(dims[[paste0(dim)]])) {
-            dims[[paste0(dim)]] = list();
-        }
-        if(is.null(dims[[paste0(dim)]][[paste0(funNo)]])) {
-            dims[[paste0(dim)]][[paste0(funNo)]] = list();
-            dims[[paste0(dim)]][[paste0(funNo)]][["OFF"]] = matrix(nrow = finalFields, ncol = requiredRuns);
-            dims[[paste0(dim)]][[paste0(funNo)]][["ON"]] = matrix(nrow = finalFields, ncol = requiredRuns);
-        }
-        for(i in 1:finalFields) {
-            dims[[paste0(dim)]][[paste0(funNo)]][["OFF"]][i, runNo] = fileData[1, resultFields[i]];
-            dims[[paste0(dim)]][[paste0(funNo)]][["ON"]][i, runNo] = fileData[2, resultFields[i]];
-        }
-    }
+    for(funNo in sortedFunctions) {
+        for(dim in sortedDimensions) {
+            for(runNo in 1:requiredRuns) {
+                partPath = paste0(partsDir, funNo, '/', dim, '/', runNo, ".txt");
+                if(!file.exists(partPath)) {
+                    next;
+                }
+                fileData = as.matrix(read.table(partPath, skip = 1));
+                
+                if(is.null(dims[[paste0(dim)]])) {
+                    dims[[paste0(dim)]] = list();
+                }
+                if(is.null(dims[[paste0(dim)]][[paste0(funNo)]])) {
+                    dims[[paste0(dim)]][[paste0(funNo)]] = list();
+                    dims[[paste0(dim)]][[paste0(funNo)]][["OFF"]] = matrix(nrow = finalFields, ncol = requiredRuns);
+                    dims[[paste0(dim)]][[paste0(funNo)]][["ON"]] = matrix(nrow = finalFields, ncol = requiredRuns);
+                }
+                for(i in 1:finalFields) {
+                    dims[[paste0(dim)]][[paste0(funNo)]][["OFF"]][i, runNo] = fileData[1, resultFields[i]];
+                    dims[[paste0(dim)]][[paste0(funNo)]][["ON"]][i, runNo] = fileData[2, resultFields[i]];
+                } # for i
+            } # for runNo
+        } # for dim
+    } # for funNo
+    loggerClockStop("collectParts");
     return(dims);
 }
 
 buildExcel = function(results) {
+    loggerClockStart("buildExcel", "Budowanie końcowego wyniku (Excel)");
+    
     require("xlsx");
     wb = createWorkbook();
     
@@ -284,7 +265,8 @@ buildExcel = function(results) {
     finalResultPath = paste0(resultsDir, "finalResult.xlsx");
     saveWorkbook(wb, finalResultPath);
     fullPath = paste0(getwd(), '/', finalResultPath);
-    loggerCONSOLE("Excel created: ", fullPath, "\nOpening result file...\n");
+    loggerClockStop("buildExcel");
+    loggerCONSOLE("Otwieranie pliku: ", fullPath, "...\n");
     system(paste0("open ", fullPath));
     loggerCONSOLE("=== END ===\n");
 }
